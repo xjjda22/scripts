@@ -6,7 +6,7 @@ const { addABI, decodeLogs } = require("abi-decoder");
 const { Interface } = require("@ethersproject/abi");
 
 const { getToken } = require("./findToken");
-const { getEthPrice } = require("./uniswapV2SubGraph"); 
+const { getEthPrice, getPairAddress } = require("./uniswapV2SubGraph"); 
 const { getUSDPrice } = require("./cryptoCompareApi"); 
 
 const eventsJson = require("./ABIEvents");
@@ -28,7 +28,11 @@ addEvents();
 const getAllLogs = async (_logs) => {
   const ethPrice = await getEthPrice();
   return await Promise.all(decodeLogs(_logs).map(async log => {
-    const { coin, logo, decimals } = getToken(log.address);
+    let { coin, logo, decimals } = getToken(log.address);
+    if(coin == "") {
+      let pair = await getPairAddress(log.address);
+      coin = pair.coin;
+    }
     let ethValue = 0;
     let usdValue = 0;
     let value;

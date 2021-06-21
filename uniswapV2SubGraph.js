@@ -15,17 +15,30 @@ const deepLogs = (obj) => {
 //   "logoURI": "https://assets.coingecko.com/coins/images/6319/thumb/USD_Coin_icon.png?1547042389"
 // };
 
-const uniswapV2GQL = "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2";
+const urlArr = [
+  "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2",
+  "https://api.thegraph.com/subgraphs/name/sushiswap/exchange",
+];
 const ethQL = `{
   bundles (first:1) {
     ethPrice
+  }
+}`;
+const pairQL = (_address) =>`{
+   pair(id: "${_address}") {
+    token0 {
+      symbol
+    }
+    token1 {
+      symbol
+    }
   }
 }`;
 
 const getEthPrice = async (debug) => {
   const config = {
     timeout: 30000,
-    url: uniswapV2GQL,
+    url: urlArr[0],
     method: 'post',
     headers: {
       // 'Accept': 'api_version=2',
@@ -47,10 +60,46 @@ const getEthPrice = async (debug) => {
   return 0;
 }
 
+const getPairAddress = async (_address, debug) =>{
+  let c = { 
+    coin: "", 
+    logo: "",
+    decimals: 18
+  };
+  const gQL = pairQL(_address);
+
+  for (let i in urlArr) {
+    const config = {
+      timeout: 30000,
+      url: urlArr[i],
+      method: 'post',
+      headers: {
+        // 'Accept': 'api_version=2',
+        // 'Content-Type': 'application/graphql',
+        'Content-Type': 'application/json'
+      },
+      // body: JSON.stringify({ query : gQL }),
+      data: { query : gQL },
+      responseType: 'json'
+    };
+    const res = await axios(config);
+    const { data: { pair } } = res.data;
+
+    if(pair != null){
+      c.coin = `${pair.token0.symbol}-${pair.token1.symbol}`
+      break;
+    }
+  }
+  if(debug) console.log('coin --',c);
+  return c;
+}
+
 // console.log('start --');
 // getEthPrice(true);
+// getPairAddress('0x4214290310264a27b0ba8cff02b4c592d0234aa1',true);
 
 module.exports = {
-  getEthPrice
+  getEthPrice,
+  getPairAddress
 }
 return;
