@@ -1,15 +1,15 @@
-
+//findToken
 const DEXES = ["COINGECKO"];
 
 let tokensList = [];
-async function getTokens() {
+async function loadTokens() {
   DEXES.map(d => {
-    let { tokens } = require(`../json/json${d}.json`)
+    let { tokens } = require(`./json/json${d}.json`)
     tokensList.push(tokens);
   })
 }
 
-getTokens();
+loadTokens();
 
 export function getToken(_address) {
   let c = { 
@@ -35,3 +35,5 @@ export function getToken(_address) {
   }
   return c;
 }
+
+// getToken('0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48')

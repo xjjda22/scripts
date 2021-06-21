@@ -2,12 +2,24 @@
   "name": "eth-scripts",
   "version": "1.0.0",
   "description": "",
+  "type":"module",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
-  "author": "",
+  "author": {
+    "name": "harry",
+    "url": "https://github.com/harryranakl"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/harryranakl/scripts"
+  },
   "license": "ISC",
   "dependencies": {
+    "@ethersproject/abi": "^5.3.1",
+    "abi-decoder": "^2.4.0",
     "axios": "^0.21.1",
     "fs": "0.0.1-security"
   }
