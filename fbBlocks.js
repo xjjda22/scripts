@@ -1,14 +1,31 @@
-export const API_URL = 'https://blocks.flashbots.net/v1/blocks';
+const axios = require('axios');
+const { inspect }  = require('util');
 
-export async function getBlocks(params) {
-  params.limit = '10';
-  const url = `${API_URL}/?${new URLSearchParams(params)}`;
-  const res = await fetch(url);
-  const { blocks } = await res.json();
-  return blocks.map(block => transformBundle(block));
+const deepLogs = (obj) => {
+  return inspect(obj, {depth: 5});
 }
 
-function getSubBundles(bundle) {
+const API_URL = 'https://blocks.flashbots.net/v1/blocks';
+
+const getBlocks = async (params) => {
+  params.limit = '10';
+  const fburl = `${API_URL}/?${new URLSearchParams(params)}`;
+
+  const config = {
+    timeout: 30000,
+    url: fburl,
+    method: 'get',
+    responseType: 'json'
+  };
+  const res = await axios(config);
+  const { blocks } = res.data;
+
+  const bblocks =  blocks.map(block => transformBundle(block));
+  console.log('blocks --',deepLogs(bblocks));
+  return bblocks;
+}
+
+const getSubBundles = (bundle) => {
   return bundle.transactions.reduce((acc, curr) => {
     if (acc[curr.bundle_index]) {
       acc[curr.bundle_index].push(curr);
@@ -19,7 +36,11 @@ function getSubBundles(bundle) {
   }, []);
 }
 
-function transformBundle(bundle) {
+const transformBundle = (bundle) => {
   bundle.transactions = getSubBundles(bundle);
   return bundle;
 }
+
+console.log('start --');
+getBlocks({});
+return;

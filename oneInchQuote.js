@@ -6,6 +6,10 @@
 const axios = require('axios');
 const { inspect }  = require('util');
 
+const deepLogs = (obj) => {
+  return inspect(obj, {depth: 5});
+}
+
 const protocols = [
   "WETH",
   "MOONISWAP",
@@ -53,10 +57,6 @@ const protocols = [
 ];
 
 const inchQuoteApi = (f, t, a, p) => `https://api.1inch.exchange/v3.0/1/quote?fromTokenAddress=${f}&toTokenAddress=${t}&amount=${a}&protocols=${p}`;
-
-const deepLogs = (obj) => {
-  return inspect(obj, {depth: 5});
-}
 
 const getQuote = async (f, t, amt, p1, p2) => {
   const p1Url = inchQuoteApi(f,t,amt,p1);
