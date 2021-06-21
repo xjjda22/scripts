@@ -7,7 +7,7 @@ const deepLogs = (obj) => {
 
 const API_URL = 'https://blocks.flashbots.net/v1/blocks';
 
-const getBlocks = async (params) => {
+const getBlocks = async (params, debug) => {
   params.limit = '10';
   const fburl = `${API_URL}/?${new URLSearchParams(params)}`;
 
@@ -21,7 +21,7 @@ const getBlocks = async (params) => {
   const { blocks } = res.data;
 
   const bblocks =  blocks.map(block => transformBundle(block));
-  console.log('blocks --',deepLogs(bblocks));
+  if(debug) console.log('blocks --',deepLogs(bblocks));
   return bblocks;
 }
 
@@ -41,6 +41,10 @@ const transformBundle = (bundle) => {
   return bundle;
 }
 
-console.log('start --');
-getBlocks({});
+// console.log('start --');
+// getBlocks({}, true);
+
+module.exports = {
+  getBlocks
+}
 return;

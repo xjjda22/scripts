@@ -1,3 +1,4 @@
+//uniswapV2SubGraph
 const axios = require('axios');
 const { inspect }  = require('util');
 
@@ -21,8 +22,7 @@ const ethQL = `{
   }
 }`;
 
-const getEthPrice = async () => {
-
+const getEthPrice = async (debug) => {
   const config = {
     timeout: 30000,
     url: uniswapV2GQL,
@@ -40,13 +40,17 @@ const getEthPrice = async () => {
   const { data } = res.data;
 
   if (data.bundles.length > 0) {
-    console.log('ethprice --',data.bundles[0].ethPrice);
+    if(debug) console.log('ethprice --',data.bundles[0].ethPrice);
     return parseFloat(data.bundles[0].ethPrice).toFixed(6);
   }
 
   return 0;
 }
 
-console.log('start --');
-getEthPrice();
+// console.log('start --');
+// getEthPrice(true);
+
+module.exports = {
+  getEthPrice
+}
 return;

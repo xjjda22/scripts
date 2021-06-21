@@ -1,30 +1,15 @@
+//ABILogs
 //npm install abi-decoder
 //npm install @ethersproject/abi
 
-import { addABI, decodeLogs } from "abi-decoder";
-import { Interface } from "@ethersproject/abi";
-import { getToken } from "./findToken";
-import { getEthPrice } from "./uniswapV2SubGraph"; 
-import { getUSDPrice } from "./cryptoCompareApi"; 
+const { addABI, decodeLogs } = require("abi-decoder");
+const { Interface } = require("@ethersproject/abi");
 
-const eventsJson = [
-  //erc20
-  { "text_signature": "event Transfer(address indexed from, address indexed to, uint256 value)", },
-  { "text_signature": "event Approval(address indexed owner, address indexed spender, uint256 value)", },
-  //WETH
-  { "text_signature": "event Deposit(address indexed dst, uint wad)", },
-  { "text_signature": "event Withdrawal(address indexed src, uint wad)", },
-  //IUniswapExchange
-  { "text_signature": "event TokenPurchase(address indexed buyer, uint256 indexed eth_sold, uint256 indexed tokens_bought)" },
-  { "text_signature": "event EthPurchase(address indexed buyer, uint256 indexed tokens_sold, uint256 indexed eth_bought)" },
-  { "text_signature": "event AddLiquidity(address indexed provider, uint256 indexed eth_amount, uint256 indexed token_amount)" },
-  { "text_signature": "event RemoveLiquidity(address indexed provider, uint256 indexed eth_amount, uint256 indexed token_amount)" },
-  //IUniswapV2Pair
-  { "text_signature": "event Mint(address indexed sender, uint amount0, uint amount1)" },
-  { "text_signature": "event Burn(address indexed sender, uint amount0, uint amount1, address indexed to)" },
-  { "text_signature": "event Swap(address indexed sender, uint amount0, uint amount1, uint amount0Out, uint amount1Out, address indexed to)" },
-  { "text_signature": "event Sync(uint112 reserve0, uint112 reserve1)" }
-];
+const { getToken } = require("./findToken");
+const { getEthPrice } = require("./uniswapV2SubGraph"); 
+const { getUSDPrice } = require("./cryptoCompareApi"); 
+
+const eventsJson = require("./ABIEvents");
 
 const addEvents = async () => {
   eventsJson.map(async e => {
@@ -40,7 +25,7 @@ const addEvents = async () => {
 
 addEvents();
 
-export async function getAllLogs(_logs) {
+const getAllLogs = async (_logs) => {
   const ethPrice = await getEthPrice();
   return await Promise.all(decodeLogs(_logs).map(async log => {
     const { coin, logo, decimals } = getToken(log.address);
@@ -79,4 +64,8 @@ export async function getAllLogs(_logs) {
 
     return log;
   }));
+}
+
+module.exports = {
+  getAllLogs
 }

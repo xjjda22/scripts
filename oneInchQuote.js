@@ -58,9 +58,9 @@ const protocols = [
 
 const inchQuoteApi = (f, t, a, p) => `https://api.1inch.exchange/v3.0/1/quote?fromTokenAddress=${f}&toTokenAddress=${t}&amount=${a}&protocols=${p}`;
 
-const getQuote = async (f, t, amt, p1, p2) => {
+const getQuote = async (f, t, amt, p1, p2, debug) => {
   const p1Url = inchQuoteApi(f,t,amt,p1);
-  console.log(p1Url);
+  if(debug) console.log(p1Url);
 
   const configp1 = {
     timeout: 30000,
@@ -75,7 +75,7 @@ const getQuote = async (f, t, amt, p1, p2) => {
   const swap1 = p1data.toTokenAmount;
 
   const p2Url = inchQuoteApi(t,f,swap1,p2);
-  console.log(p2Url);
+  if(debug) console.log(p2Url);
 
   const configp2 = {
     timeout: 30000,
@@ -95,11 +95,11 @@ const getQuote = async (f, t, amt, p1, p2) => {
     return false;
   } else {
 
-    // console.log('p1data -- ',deepLogs(p1data));
-    // console.log('p2data -- ',deepLogs(p2data));
-    console.log(`${p1} f-amt t-amt *** `, famt1/10**18, swap1);
-    console.log(`${p2} f-amt t-amt *** `, famt2, swap2/10**18);
-    console.log(`profit swap2-amt *** `, (swap2-famt1)/10**d2);
+    // if(debug) console.log('p1data -- ',deepLogs(p1data));
+    // if(debug) console.log('p2data -- ',deepLogs(p2data));
+    if(debug) console.log(`${p1} f-amt t-amt *** `, famt1/10**18, swap1);
+    if(debug) console.log(`${p2} f-amt t-amt *** `, famt2, swap2/10**18);
+    if(debug) console.log(`profit swap2-amt *** `, (swap2-famt1)/10**d2);
     return true;
   }
 }
@@ -110,8 +110,12 @@ const amt = 35000000000000000000;
 const p1 = "SUSHI", p2 = "UNISWAP_V2";
 
 console.log('start --');
-getQuote(f, t, amt, p1, p2);
-getQuote(f, t, amt, p2, p1);
+getQuote(f, t, amt, p1, p2, true);
+getQuote(f, t, amt, p2, p1, true);
+
+module.exports = {
+  getAllLogs
+}
 return;
 
  

@@ -2,16 +2,15 @@
 const DEXES = ["COINGECKO"];
 
 let tokensList = [];
-async function loadTokens() {
+const loadTokens = () => {
   DEXES.map(d => {
     let { tokens } = require(`./json/json${d}.json`)
     tokensList.push(tokens);
   })
 }
-
 loadTokens();
 
-export function getToken(_address) {
+const getToken = (_address, debug) =>{
   let c = { 
     coin: "", 
     logo: "",
@@ -33,7 +32,14 @@ export function getToken(_address) {
       break;
     }
   }
+  if(debug) console.log('coin --', c);
   return c;
 }
 
-// getToken('0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48')
+// console.log('start --');
+// getToken('0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', true);
+
+module.exports = {
+  getToken
+}
+return;

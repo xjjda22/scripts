@@ -1,4 +1,4 @@
-[
+module.exports = [
   //erc20
   { "text_signature": "event Transfer(address indexed from, address indexed to, uint256 value)", },
   { "text_signature": "event Approval(address indexed owner, address indexed spender, uint256 value)", },

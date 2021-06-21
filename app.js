@@ -1,12 +1,15 @@
 //app
-import { getToken } from "./findToken";
-import { getUSDPrice } from "./cryptoCompareApi";
-import { getEthPrice } from "./uniswapV2SubGraph";
-import { getBlocks } from "./fbBlocks";
+const { getEthPrice } = require( "./uniswapV2SubGraph");
+const { getUSDPrice } = require( "./cryptoCompareApi");
+const { getToken } = require( "./findToken");
+const { getBlocks } = require( "./fbBlocks");
+const { getReceipts } = require( "./trxReceipts");
 
-getToken('0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48');
-getUSDPrice('CHI');
-getEthPrice();
-getBlocks();
+getEthPrice(true);
+getUSDPrice('CHI',true);
 
-module.exports = app;
+getToken('0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',true);
+getBlocks({},true);
+getReceipts({transaction_hash:'0x8f7a7b99a29f5d848c39ad9d61719e4923c5d47dfd3bb6e869cdd5f406da56e2'}, true);
+
+// module.exports app;
