@@ -1,16 +1,27 @@
+const axios = require('axios');
+
 const cryptoApi = _symbol => `https://min-api.cryptocompare.com/data/price?fsym=${_symbol}&tsyms=USD`;
 
-export async function getUSDPrice(sym) {
-  const res = await fetch(cryptoApi(sym));
+const getUSDPrice = async (sym) => {
+  const purl = cryptoApi(sym);
+  console.log(purl);
+  
+  const config = {
+    timeout: 30000,
+    url: purl,
+    method: 'get',
+    responseType: 'json'
+  };
+  const res = await axios(config);
+  const data = res.data;
 
-  const result = await res.json();
-
-  if (result.USD > 0) {
-    return parseFloat(result.USD).toFixed(2);
+  if (data.USD > 0) {
+    console.log('usd --', data.USD);
+    return parseFloat(data.USD).toFixed(2);
   }
 
   return 0;
 }
-
-// getUSDPrice('CHI');
-// getUSDPrice('DAI');
+console.log('start --');
+getUSDPrice('CHI');
+getUSDPrice('DAI');

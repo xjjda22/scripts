@@ -63,7 +63,6 @@ export async function getAllLogs(_logs) {
           ethValue = parseFloat(value * ethPrice).toFixed(2);
         } else if(coin !== "") {
           if(usdValue > 0) ethValue = parseFloat(value * usdValue).toFixed(2);
-          console.log(coin, value, usdValue, ethValue);
         }
       }
     });
@@ -77,7 +76,6 @@ export async function getAllLogs(_logs) {
       value,
       ethValue
     };
-    if(log.name == "Transfer" || log.name == "Swap") console.log('log--',log)
 
     return log;
   }));

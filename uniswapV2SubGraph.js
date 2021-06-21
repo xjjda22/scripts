@@ -1,3 +1,6 @@
+const axios = require('axios');
+const { inspect }  = require('util');
+
 // const USDC = {
 //   "chainId": 1,
 //   "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
@@ -14,21 +17,36 @@ const ethQL = `{
   }
 }`;
 
-export async function getEthPrice() {
-  const res = await fetch(uniswapV2GQL, {
-    method: 'POST',
+const deepLogs = (obj) => {
+  return inspect(obj, {depth: 5});
+}
+
+const getEthPrice = async () => {
+
+  const config = {
+    timeout: 30000,
+    url: uniswapV2GQL,
+    method: 'post',
     headers: {
-      'Accept': 'api_version=2',
-      'Content-Type': 'application/graphql'
+      // 'Accept': 'api_version=2',
+      // 'Content-Type': 'application/graphql',
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ query : ethQL })
-  });
+    // body: JSON.stringify({ query : ethQL }),
+    data: { query : ethQL },
+    responseType: 'json'
+  };
+  const res = await axios(config);
+  const { data } = res.data;
 
-  const { data: { bundles } } = await res.json();
-
-  if (bundles.length > 0) {
-    return parseFloat(bundles[0].ethPrice).toFixed(6);
+  if (data.bundles.length > 0) {
+    console.log('ethprice --',data.bundles[0].ethPrice);
+    return parseFloat(data.bundles[0].ethPrice).toFixed(6);
   }
 
-  return 1;
+  return 0;
 }
+
+console.log('start --');
+getEthPrice();
+return;

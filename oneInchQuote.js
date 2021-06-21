@@ -109,7 +109,9 @@ const t = "0xdac17f958d2ee523a2206206994597c13d831ec7";
 const amt = 35000000000000000000;
 const p1 = "SUSHI", p2 = "UNISWAP_V2";
 
+console.log('start --');
 getQuote(f, t, amt, p1, p2);
 getQuote(f, t, amt, p2, p1);
+return;
 
  
