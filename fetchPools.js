@@ -16,7 +16,7 @@ const poolNames = [
   "curve",
   "balancer"
 ];
-const poolApi = pf => `https://data-api.defipulse.com/api/v1/blocklytics/pools/v1/exchanges?platform=${pf}&orderBy=usdVolume&direction=desc&api-key=${DEFIPULSE_APIKEY}`;
+const poolApi = pf => `https://data-api.defipulse.com/api/v1/blocklytics/pools/v1/exchanges?platform=${pf}&orderBy=usdLiquidity&direction=desc&api-key=${DEFIPULSE_APIKEY}`;
 
 const readFiles = async pf => {
   const poolUrl = poolApi(pf);
