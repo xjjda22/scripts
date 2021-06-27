@@ -11,6 +11,14 @@ const deepLogs = (obj) => {
 }
 
 const protocols = [
+  "DFX_FINANCE",
+  "ONE_INCH_LIMIT_ORDER",
+  "CONVERGENCE_X",
+  "SAKESWAP",
+  "CREAM_LENDING",
+  "DODO_V2",
+  "CURVE_V2",
+  "SETH_WRAPPER",
   "WETH",
   "MOONISWAP",
   "SUSHI",
@@ -53,10 +61,18 @@ const protocols = [
   "ONE_INCH_LP_MIGRATOR",
   "POWERINDEX",
   "INDEXED_FINANCE",
-  "XSIGMA"
+  "XSIGMA",
+  "SMOOTHY_FINANCE",
+  "PMM2",
+  "PMM3",
+  "SADDLE",
+  "PMM4",
+  "KYBER_DMM",
+  "BALANCER_V2",
+  "UNISWAP_V3"
 ];
 
-const inchQuoteApi = (from, to, amt, plat) => `https://api.1inch.exchange/v3.0/1/quote?fromTokenAddress=${from}&toTokenAddress=${to}&amount=${amt}&protocols=${plat}`;
+const quoteApi = (from, to, amt, plat) => `https://api.1inch.exchange/v3.0/1/quote?fromTokenAddress=${from}&toTokenAddress=${to}&amount=${amt}&protocols=${plat}`;
 let config = {
   timeout: 30000,
   url: '',
@@ -67,9 +83,9 @@ let config = {
 const getQuote = async (from, to, amt, dec, plat1, plat2, debug) => {
   
   let platres1,platdata1,fromamt1,amt1;
-  let pres2,platdata2,fromamt2,amt2,dec2;
+  let platres2,platdata2,fromamt2,amt2,dec2;
 
-  const platurl1 = inchQuoteApi(from,to,amt*(10**dec),plat1);
+  const platurl1 = quoteApi(from,to,amt+dec,plat1);
   config.url = platurl1;
   // if(debug) console.log(platurl1);
   
@@ -85,7 +101,7 @@ const getQuote = async (from, to, amt, dec, plat1, plat2, debug) => {
     return;
   }
   
-  const platurl2 = inchQuoteApi(to,from,amt1,plat2);
+  const platurl2 = quoteApi(to,from,amt1,plat2);
   config.url = platurl2;
   // if(debug) console.log(platurl2);
 
@@ -110,42 +126,68 @@ const getQuote = async (from, to, amt, dec, plat1, plat2, debug) => {
     // if(debug) console.log('platdata1 -- ',deepLogs(platdata1));
     // if(debug) console.log('platdata2 -- ',deepLogs(platdata2));
     if(debug) {
-      // if((amt2-fromamt1)/(10**dec2) > 0){
-        let obj1 = {
-          'plat-1': plat1 ,
-          'from-amt-1': fromamt1/10**18,
-          'to-amt-1': amt1,
-          'plat-2': plat2 ,
-          'from-amt-2': fromamt2,
-          'to-amt-2': amt2/10**18,
-          'profit': (amt2-fromamt1)/(10**dec2)
-        }
-        console.table(obj1);
-      // }
+      let obj = {
+        'plat': plat1 ,
+        'from-amt': fromamt1,
+        'to-amt': amt1,
+        'plat-2': plat2
+      }
+      let obj2= {
+        'plat': plat2 ,
+        'from-amt': fromamt2,
+        'to-amt': amt2
+      }
+      let obj3 = {
+        'profit': amt2-fromamt1,
+        'eth-profit': parseFloat((amt2-fromamt1)/_e).toFixed(2)
+      }
+      if(amt2-fromamt1 > 0 ){
+        profitTrades.push(obj);
+        profitTrades.push(obj2);
+        profitTrades.push(obj3);
+      } else {
+        losingTrades.push(obj);
+        losingTrades.push(obj2);
+        losingTrades.push(obj3);
+      }
       
     }
     return true;
   }
 }
 
-const runQuotes = async () => {
-  const weth_add = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2";
-  const usdt_add = "0xdac17f958d2ee523a2206206994597c13d831ec7";
-  const yfl_add = "0x28cb7e841ee97947a86B06fA4090C8451f64c0be";
-  let _amt = _i = 20, _dec = 18;
-  const _plat1 = "UNISWAP_V2", _plat2 = "SUSHI";
+let _dec = '000000000000000000';
+let _e = 1000000000000000000;
+let _showProfit = true;
+let _showlosing = true;
+let profitTrades = [], losingTrades = [];
 
-  for(_i=0;_i<50;_i++){
-    await getQuote(weth_add, usdt_add, _amt, _dec, _plat1, _plat2, true);
-    await getQuote(weth_add, usdt_add, _amt, _dec, _plat2, _plat1, true);
-    _amt = _amt+10; 
+const weth_add = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2";
+const usdt_add = "0xdac17f958d2ee523a2206206994597c13d831ec7";
+const usdc_add = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
+
+const seth_add = "0x57ab1ec28d129707052df4df418d58a2d46d5f51";
+
+let _amt = 1, _inc = 5;
+const _plat1 = "UNISWAP_V2", _plat2 = "SUSHI";
+// const _plat1 = "UNISWAP_V2", _plat2 = "UNISWAP_V3";
+// const _plat1 = "UNISWAP_V3", _plat2 = "SUSHI";
+// const _plat1 = "CURVE", _plat2 = "SYNTHETIX";
+
+const runQuotes = async (debug) => {
+  
+  for(let _i=0;_i<5;_i++){
+    await getQuote(weth_add, usdc_add, _amt, _dec, _plat1, _plat2, true);
+    await getQuote(weth_add, usdc_add, _amt, _dec, _plat2, _plat1, true);
+    _amt = _amt+_inc; 
   }
-
+  
+  if(debug && _showlosing) console.table(losingTrades);
+  if(debug && _showProfit) console.table(profitTrades);
 }
 
 console.log('start --');
-runQuotes();
-
+runQuotes(true);
 // getQuote(_f, _t, _a, _d, _p1, _p2, true);
 // getQuote(_f, _t, _a, _d, _p2, _p1, true);
 
@@ -153,5 +195,4 @@ module.exports = {
   getQuote
 }
 return;
-
  

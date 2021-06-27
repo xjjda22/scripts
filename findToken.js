@@ -1,10 +1,10 @@
 //findToken
-const DEXES = ["COINGECKO"];
+const DEXES = ["coingecko"];
 
 let tokensList = [];
 const loadTokens = () => {
   DEXES.map(d => {
-    let { tokens } = require(`./json/json${d}.json`)
+    let { tokens } = require(`./json/${d}-json.json`)
     tokensList.push(tokens);
   })
 }

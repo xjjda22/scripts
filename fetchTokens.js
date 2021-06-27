@@ -7,7 +7,10 @@ const fs = require('fs');
 const axios = require('axios');
 
 const dexUrl = {
-  'COINGECKO': "https://tokens.coingecko.com/uniswap/all.json"
+  'coingecko': "https://tokens.coingecko.com/uniswap/all.json",
+  '1inch': "https://api.1inch.exchange/v3.0/1/tokens",
+  '0x': "https://api.0x.org/swap/v1/tokens",
+  'kyber': "https://api.kyber.network/currencies",
 };
 
 const tokensBySymbol = {}
@@ -17,26 +20,45 @@ const readFiles = async dex => {
 
   const config = {
     timeout: 30000,
-    url: poolUrl,
+    url: tokensUrl,
     method: 'get',
     responseType: 'json'
   };
 
-  const { data }  = await axios(config);
-  const { tokens } = data;
+  let { data }  = await axios(config);
 
   if (!data) {
     console.error(`error fetching data from ${this.name}: ${error}`);
     return false;
   } else {
-    tokens.forEach(token => {
-      tokensBySymbol[token.symbol] = token;
-    })
     console.log('writing files -- ');
-    fs.writeFile(`${__dirname}/json/json${dex}.json`, global.JSON.stringify(data), console.error);
-    fs.writeFile(`${__dirname}/json/tokens${dex}.json`, global.JSON.stringify(tokensBySymbol), console.error);
+    if(dex == 'coingecko') {
+      let { tokens } = data;
+      data.total = tokens.length;
+    } else if(dex == '1inch'){
+      let { tokens } = data;
+      data.total = Object.keys(tokens).length;
+    } else if(dex == '0x'){
+      let { records } = data;
+      data.total = records.length;
+    } else if(dex == 'kyber'){
+      data.total = data.data.length;
+    }
+    fs.writeFile(`${__dirname}/json/${dex}-json.json`, global.JSON.stringify(data), console.error);
+
+    // if(dex == 'coingecko'){
+    //   tokens.forEach(token => {
+    //     tokensBySymbol[token.symbol] = token;
+    //   })
+    //   fs.writeFile(`${__dirname}/json/${dex}-tokens.json`, global.JSON.stringify(tokensBySymbol), console.error);
+    // } else if(dex == '1inch'){
+
+    // }
     return true;
   }
 }
 
-readFiles('COINGECKO');
+// readFiles('coingecko');
+// readFiles('1inch');
+// readFiles('0x');
+readFiles('kyber');
