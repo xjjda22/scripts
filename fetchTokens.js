@@ -8,6 +8,7 @@ const axios = require('axios');
 
 const dexUrl = {
   'coingecko': "https://tokens.coingecko.com/uniswap/all.json",
+  'coingecko-coins': "https://api.coingecko.com/api/v3/coins/list",
   '1inch': "https://api.1inch.exchange/v3.0/1/tokens",
   '0x': "https://api.0x.org/swap/v1/tokens",
   'kyber': "https://api.kyber.network/currencies",
@@ -35,6 +36,8 @@ const readFiles = async dex => {
     if(dex == 'coingecko') {
       let { tokens } = data;
       data.total = tokens.length;
+    } else if(dex == 'coingecko-coins'){
+      
     } else if(dex == '1inch'){
       let { tokens } = data;
       data.total = Object.keys(tokens).length;
@@ -61,4 +64,5 @@ const readFiles = async dex => {
 // readFiles('coingecko');
 // readFiles('1inch');
 // readFiles('0x');
-readFiles('kyber');
+// readFiles('kyber');
+readFiles('coingecko-coins');

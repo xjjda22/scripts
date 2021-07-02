@@ -10,66 +10,86 @@ const deepLogs = (obj) => {
   return inspect(obj, {depth: 5});
 }
 
+// const protocols = [
+//   "AAVE",
+//   "AAVE_LIQUIDATOR",
+//   "AAVE_V2",
+//   "BALANCER",
+//   "BALANCER_V2",
+//   "BANCOR",
+//   "BLACKHOLESWAP",
+//   "CHAI",
+//   "COFIX",
+//   "COMPOUND",
+//   "CONVERGENCE_X",
+//   "CREAMSWAP",
+//   "CREAM_LENDING",
+//   "CURVE",
+//   "CURVE_V2",
+//   "DEFISWAP",
+//   "DFX_FINANCE",
+//   "DODO",
+//   "DODO_V2",
+//   "IEARN",
+//   "INDEXED_FINANCE",
+//   "KYBER",
+//   "KYBER_DMM",
+//   "LINKSWAP",
+//   "LUASWAP",
+//   "MINISWAP",
+//   "MOONISWAP",
+//   "MSTABLE",
+//   "OASIS",
+//   "ONE_INCH_LIMIT_ORDER",
+//   "ONE_INCH_LP",
+//   "ONE_INCH_LP_1_1",
+//   "ONE_INCH_LP_MIGRATOR",
+//   "ONE_INCH_LP_MIGRATOR_V1_1",
+//   "PMM1",
+//   "PMM2",
+//   "PMM3",
+//   "PMM4",
+//   "POWERINDEX",
+//   "PSM",
+//   "SADDLE",
+//   "SAKESWAP",
+//   "SETH_WRAPPER",
+//   "SHELL",
+//   "SMOOTHY_FINANCE",
+//   "ST_ETH",
+//   "SUSHI",
+//   "SUSHISWAP_MIGRATOR",
+//   "SWERVE",
+//   "SYNTHETIX",
+//   "S_FINANCE",
+//   "UNISWAP_V1",
+//   "UNISWAP_V2",
+//   "UNISWAP_V2_MIGRATOR",
+//   "UNISWAP_V3",
+//   "VALUELIQUID",
+//   "WETH",
+//   "XSIGMA",
+//   "ZRX"
+// ];
+
 const protocols = [
-  "DFX_FINANCE",
-  "ONE_INCH_LIMIT_ORDER",
-  "CONVERGENCE_X",
-  "SAKESWAP",
-  "CREAM_LENDING",
-  "DODO_V2",
-  "CURVE_V2",
-  "SETH_WRAPPER",
-  "WETH",
-  "MOONISWAP",
-  "SUSHI",
-  "COMPOUND",
-  "KYBER",
-  "CREAMSWAP",
-  "AAVE",
-  "CURVE",
-  "UNISWAP_V1",
+  // "UNISWAP_V1",
   "UNISWAP_V2",
-  "BALANCER",
-  "CHAI",
-  "OASIS",
-  "BANCOR",
-  "IEARN",
-  "SWERVE",
-  "VALUELIQUID",
-  "DODO",
-  "SHELL",
-  "BLACKHOLESWAP",
-  "PMM1",
-  "DEFISWAP",
-  "COFIX",
-  "ZRX",
-  "LUASWAP",
-  "MINISWAP",
-  "MSTABLE",
-  "AAVE_LIQUIDATOR",
-  "SYNTHETIX",
-  "AAVE_V2",
-  "ST_ETH",
-  "ONE_INCH_LP",
-  "LINKSWAP",
-  "S_FINANCE",
-  "ONE_INCH_LP_1_1",
-  "PSM",
-  "ONE_INCH_LP_MIGRATOR_V1_1",
-  "UNISWAP_V2_MIGRATOR",
-  "SUSHISWAP_MIGRATOR",
-  "ONE_INCH_LP_MIGRATOR",
-  "POWERINDEX",
-  "INDEXED_FINANCE",
-  "XSIGMA",
-  "SMOOTHY_FINANCE",
-  "PMM2",
-  "PMM3",
-  "SADDLE",
-  "PMM4",
+  // "UNISWAP_V3",
+  "SUSHI",
+  // "KYBER",
   "KYBER_DMM",
+  // "BALANCER",
   "BALANCER_V2",
-  "UNISWAP_V3"
+  "BANCOR",
+  "CREAMSWAP",
+  // "AAVE",
+  "AAVE_V2",
+  "COMPOUND",
+  // "CURVE",
+  "CURVE_V2",
+  // "DEFISWAP",
+  "SYNTHETIX",
 ];
 
 const quoteApi = (from, to, amt, plat) => `https://api.1inch.exchange/v3.0/1/quote?fromTokenAddress=${from}&toTokenAddress=${to}&amount=${amt}&protocols=${plat}`;
@@ -163,23 +183,30 @@ let _showlosing = true;
 let profitTrades = [], losingTrades = [];
 
 const weth_add = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2";
+const dai_add = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
 const usdt_add = "0xdac17f958d2ee523a2206206994597c13d831ec7";
 const usdc_add = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
+const wbtc_add = "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599";
 
 const seth_add = "0x57ab1ec28d129707052df4df418d58a2d46d5f51";
 
-let _amt = 1, _inc = 5;
+let _amt = 1, _inc = 1;
 const _plat1 = "UNISWAP_V2", _plat2 = "SUSHI";
-// const _plat1 = "UNISWAP_V2", _plat2 = "UNISWAP_V3";
-// const _plat1 = "UNISWAP_V3", _plat2 = "SUSHI";
-// const _plat1 = "CURVE", _plat2 = "SYNTHETIX";
 
 const runQuotes = async (debug) => {
   
-  for(let _i=0;_i<5;_i++){
-    await getQuote(weth_add, usdc_add, _amt, _dec, _plat1, _plat2, true);
-    await getQuote(weth_add, usdc_add, _amt, _dec, _plat2, _plat1, true);
-    _amt = _amt+_inc; 
+  for(let _p1=0;_p1<protocols.length;_p1++){
+    for(let _p2=0;_p2<protocols.length;_p2++){
+      let _plat1 = protocols[_p1], _plat2 = protocols[_p2];
+      if(_plat1 == _plat2) continue;
+      // console.log('protocols -- ', _plat1, _plat2);
+      
+      for(let _i=0;_i<5;_i++){
+        await getQuote(weth_add, usdc_add, _amt, _dec, _plat1, _plat2, true);
+        await getQuote(weth_add, usdc_add, _amt, _dec, _plat2, _plat1, true);
+        _amt = _amt+_inc; 
+      }
+    }
   }
   
   if(debug && _showlosing) console.table(losingTrades);
