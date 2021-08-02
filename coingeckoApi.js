@@ -105,7 +105,7 @@ console.log('start --');
 // getQuote('usd-coin', true);
 // getQuote('weth', true);
 // getQuote('dai', true);
-getQuote('tether', true);
+// getQuote('tether', true);
 
 module.exports = {
   getQuote
