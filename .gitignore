@@ -1,7 +1,8 @@
+.DS_Store*
 /node_modules
 /build
-/.vscode
-/.env
-/yarn.lock
+.vscode
+.env*
+yarn.lock
 /json
-/package-lock.json
+package-lock.json
