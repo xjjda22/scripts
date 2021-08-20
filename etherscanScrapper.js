@@ -1,4 +1,4 @@
-//etherscansniffer
+//etherscanScrapper
 
 //npm install tabletojson
 //npm install fs
