@@ -6,6 +6,8 @@ const deepLogs = (obj) => {
   return inspect(obj, {depth: 5});
 }
 
+const { ETHERSCAN_APIKEY } = process.env;
+
 const gasPrices = async (api, debug) => {
   
   const api_url = `${api}`;
@@ -33,6 +35,8 @@ gasPrices("https://www.etherchain.org/api/gasPriceOracle", true);
 //GasNow
 //MyCrypto
 //etherscan
+gasPrices(`https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${ETHERSCAN_APIKEY}`, true);
+
 
 module.exports = {
   gasPrices
