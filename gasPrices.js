@@ -1,4 +1,5 @@
 // gasPrices
+require('dotenv').config();
 const axios = require('axios');
 const { inspect }  = require('util');
 
@@ -25,13 +26,13 @@ const gasPrices = async (api, debug) => {
 }
 
 // console.log('start --');
-gasPrices("https://ethgasstation.info/json/ethgasAPI.json", true);
-gasPrices("https://gasprice.poa.network/", true);
-gasPrices("https://www.gasnow.org/api/v3/gas/price", true);
-gasPrices("https://safe-relay.gnosis.io/api/v1/gas-station/", true);
-gasPrices("https://api.txprice.com/", true);
-gasPrices("https://api.metaswap.codefi.network/gasPrices", true);
-gasPrices("https://www.etherchain.org/api/gasPriceOracle", true);
+// gasPrices("https://ethgasstation.info/json/ethgasAPI.json", true);
+// gasPrices("https://gasprice.poa.network/", true);
+// gasPrices("https://www.gasnow.org/api/v3/gas/price", true);
+// gasPrices("https://safe-relay.gnosis.io/api/v1/gas-station/", true);
+// gasPrices("https://api.txprice.com/", true);
+// gasPrices("https://api.metaswap.codefi.network/gasPrices", true);
+// gasPrices("https://www.etherchain.org/api/gasPriceOracle", true);
 //GasNow
 //MyCrypto
 //etherscan
