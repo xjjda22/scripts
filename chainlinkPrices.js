@@ -18,7 +18,7 @@ const CHAINLINK_ETHUSD_ABI = [{ "inputs": [], "name": "decimals", "outputs": [{ 
 
 const chainLinkETHUSD = new Contract(CHAINLINK_ETHUSD_CONTRACT_ADDRESS, CHAINLINK_ETHUSD_ABI, provider);
 
-const gasPrices = async (debug) => {
+const getPriceFeed = async (debug) => {
   
   const data = await chainLinkETHUSD.functions.latestRoundData();
   if(debug) console.log('data -- ',data);
@@ -26,10 +26,10 @@ const gasPrices = async (debug) => {
 }
 
 console.log('start --');
-gasPrices(true);
+getPriceFeed(true);
 
 
 module.exports = {
-  gasPrices
+  getPriceFeed
 }
 return;
