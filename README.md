@@ -36,4 +36,5 @@ AAVE/USD (https://etherscan.io/address/0x547a514d5e3769680ce22b2361c10ea13619e8a
 
 - [tokensnifferScrapper.js](https://tokensniffer.com/) - read tokens and save as json file
 - [etherscanScrapper.js](https://etherscan.io/accounts/label/compound) - read verified contracts and save as json file
+- [4byteEventsApi.js](https://www.4byte.directory/api/v1/event-signatures/?format=json) - read contracts event signatures and save as json file
 
