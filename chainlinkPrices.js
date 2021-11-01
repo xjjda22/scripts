@@ -15,10 +15,12 @@ const provider = new providers.StaticJsonRpcProvider(ETHEREUM_RPC_URL);
 
 const CHAINLINK_ETHUSD_CONTRACT_ADDRESS = "0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419";
 const CHAINLINK_BTCUSD_CONTRACT_ADDRESS = "0xf4030086522a5beea4988f8ca5b36dbc97bee88c";
+const CHAINLINK_AAVEUSD_CONTRACT_ADDRESS = "0x547a514d5e3769680ce22b2361c10ea13619e8a9";
 const CHAINLINK_PRICEFEED_ABI = [{ "inputs": [], "name": "decimals", "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "description", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint80", "name": "_roundId", "type": "uint80" }], "name": "getRoundData", "outputs": [{ "internalType": "uint80", "name": "roundId", "type": "uint80" }, { "internalType": "int256", "name": "answer", "type": "int256" }, { "internalType": "uint256", "name": "startedAt", "type": "uint256" }, { "internalType": "uint256", "name": "updatedAt", "type": "uint256" }, { "internalType": "uint80", "name": "answeredInRound", "type": "uint80" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "latestRoundData", "outputs": [{ "internalType": "uint80", "name": "roundId", "type": "uint80" }, { "internalType": "int256", "name": "answer", "type": "int256" }, { "internalType": "uint256", "name": "startedAt", "type": "uint256" }, { "internalType": "uint256", "name": "updatedAt", "type": "uint256" }, { "internalType": "uint80", "name": "answeredInRound", "type": "uint80" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "version", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }];
 
 const chainLinkETHUSD = new Contract(CHAINLINK_ETHUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
 const chainLinkBTCUSD = new Contract(CHAINLINK_BTCUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
+const chainLinkAAVEUSD = new Contract(CHAINLINK_AAVEUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
 
 const getPriceFeed = async (feed, debug) => {
   
@@ -30,6 +32,7 @@ const getPriceFeed = async (feed, debug) => {
 console.log('start --');
 getPriceFeed(chainLinkETHUSD, true);
 getPriceFeed(chainLinkBTCUSD, true);
+getPriceFeed(chainLinkAAVEUSD, true);
 
 module.exports = {
   getPriceFeed
