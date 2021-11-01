@@ -17,12 +17,12 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@ethersproject/abi": "^5.3.1",
+    "@ethersproject/abi": "^5.5.0",
     "abi-decoder": "^2.4.0",
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "dotenv": "^10.0.0",
-    "ethers": "^5.3.1",
+    "ethers": "^5.5.1",
     "fs": "0.0.1-security",
-    "tabletojson": "^2.0.6"
+    "tabletojson": "^2.0.7"
   }
 }
