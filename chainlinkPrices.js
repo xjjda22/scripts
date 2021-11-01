@@ -1,17 +1,19 @@
 // chanlinkPrices
 require('dotenv').config();
 const axios = require('axios');
-const { Contract, providers } = require("ethers");
+const { Contract, providers, utils } = require("ethers");
 const { inspect }  = require('util');
 
 const deepLogs = (obj) => {
   return inspect(obj, {depth: 5});
 }
 
-const { INFURA_APIKEY } = process.env;
+const { INFURA_APIKEY, ARCHIVENODE_APIKEY } = process.env;
 
-const ETHEREUM_RPC_URL = `https://mainnet.infura.io/v3/${INFURA_APIKEY}`;
+// const ETHEREUM_RPC_URL = `https://mainnet.infura.io/v3/${INFURA_APIKEY}`;
+const ETHEREUM_RPC_URL = `https://api.archivenode.io/${ARCHIVENODE_APIKEY}`;
 const provider = new providers.StaticJsonRpcProvider(ETHEREUM_RPC_URL);
+
 
 const CHAINLINK_ETHUSD_CONTRACT_ADDRESS = "0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419";
 const CHAINLINK_BTCUSD_CONTRACT_ADDRESS = "0xf4030086522a5beea4988f8ca5b36dbc97bee88c";
@@ -22,24 +24,35 @@ const chainLinkETHUSD = new Contract(CHAINLINK_ETHUSD_CONTRACT_ADDRESS, CHAINLIN
 const chainLinkBTCUSD = new Contract(CHAINLINK_BTCUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
 const chainLinkAAVEUSD = new Contract(CHAINLINK_AAVEUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
 
-const getPriceFeed = async (feed, debug) => {
+const getPriceFeed = async (coin, feed, debug) => {
   
   const data = await feed.functions.latestRoundData();
-  if(debug) console.log('data -- ',data);
-  return data;
+  const dataObj = {
+    "roundId": data[0],
+    "answer": data[1],
+    "startedAt": data[2],
+    "updatedAt": data[3],
+  }
+  dataObj.roundId = dataObj.roundId.toString();
+  dataObj.startedAt = dataObj.startedAt.toString();
+  dataObj.updatedAt = dataObj.updatedAt.toString();
+  dataObj.answer = dataObj.answer.toString();
+  dataObj.answer = parseFloat(dataObj.answer.toString() / 10 ** 8).toFixed(2);
+  if(debug) console.log('dataObj -- ', coin, dataObj);
+  return dataObj;
 }
 
 console.log('start --');
-getPriceFeed(chainLinkETHUSD, true);
-getPriceFeed(chainLinkBTCUSD, true);
-getPriceFeed(chainLinkAAVEUSD, true);
+getPriceFeed('eth', chainLinkETHUSD, true);
+getPriceFeed('btc', chainLinkBTCUSD, true);
+getPriceFeed('aave', chainLinkAAVEUSD, true);
 
 module.exports = {
   getPriceFeed
 }
 return;
 
-// data ethusd--  [
+// data eth --  [
 //   BigNumber { _hex: '0x05000000000000332f', _isBigNumber: true },
 //   BigNumber { _hex: '0x65b9377322', _isBigNumber: true },
 //   BigNumber { _hex: '0x617b5491', _isBigNumber: true },
@@ -51,7 +64,7 @@ return;
 //   updatedAt: BigNumber { _hex: '0x617b5491', _isBigNumber: true },
 //   answeredInRound: BigNumber { _hex: '0x05000000000000332f', _isBigNumber: true }
 // ]
-// data btcusd--  [
+// data btc --  [
 //   BigNumber { _hex: '0x0500000000000027ca', _isBigNumber: true },
 //   BigNumber { _hex: '0x0598a24644aa', _isBigNumber: true },
 //   BigNumber { _hex: '0x617b54a9', _isBigNumber: true },
@@ -63,3 +76,22 @@ return;
 //   updatedAt: BigNumber { _hex: '0x617b54a9', _isBigNumber: true },
 //   answeredInRound: BigNumber { _hex: '0x0500000000000027ca', _isBigNumber: true }
 // ]
+
+// dataObj --  aave {
+//   roundId: '55340232221128658975',
+//   answer: '304.90',
+//   startedAt: '1635739324',
+//   updatedAt: '1635739324'
+// }
+// dataObj --  eth {
+//   roundId: '92233720368547771338',
+//   answer: '4185.75',
+//   startedAt: '1635739360',
+//   updatedAt: '1635739360'
+// }
+// dataObj --  btc {
+//   roundId: '92233720368547768385',
+//   answer: '59919.45',
+//   startedAt: '1635739400',
+//   updatedAt: '1635739400'
+// }
