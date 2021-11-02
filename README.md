@@ -23,6 +23,7 @@
 - [txprice](https://api.txprice.com/)
 - [metaswap](https://api.metaswap.codefi.network/gasPrices)
 - [etherchain](https://www.etherchain.org/api/gasPriceOracle)
+- [gasprice.io](https://api.gasprice.io)
 
 # 🔗 chainlink feeds - chainlinkPrices.js (https://data.chain.link/)
 

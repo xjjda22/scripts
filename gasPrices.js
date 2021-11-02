@@ -36,7 +36,8 @@ const gasPrices = async (api, debug) => {
 //GasNow
 //MyCrypto
 //etherscan
-gasPrices(`https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${ETHERSCAN_APIKEY}`, true);
+// gasPrices(`https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${ETHERSCAN_APIKEY}`, true);
+gasPrices(`https://api.gasprice.io/v1/estimates`, true);
 
 
 module.exports = {
