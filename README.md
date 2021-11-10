@@ -17,12 +17,11 @@
 
 - [etherscan](https://api.etherscan.io/api)
 - [ethgasstation](https://ethgasstation.info)
-- [blockscout](https://blockscout.com/eth/mainnet/api/v1/gas-price-oracle)
 - [gasnow](https://www.gasnow.org/api/v3/gas/price)
 - [gnosis](https://safe-relay.gnosis.io/api/v1/gas-station/)
 - [txprice](https://api.txprice.com/)
 - [metaswap](https://api.metaswap.codefi.network/gasPrices)
-- [etherchain](https://www.etherchain.org/api/gasPriceOracle)
+- [etherchain](https://www.etherchain.org/api/gasnow)
 - [gasprice.io](https://api.gasprice.io)
 
 # 🔗 chainlink feeds - chainlinkPrices.js (https://data.chain.link/)
