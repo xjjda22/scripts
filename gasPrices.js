@@ -27,17 +27,18 @@ const gasPrices = async (api, debug) => {
 
 // console.log('start --');
 // gasPrices("https://ethgasstation.info/json/ethgasAPI.json", true);
-// gasPrices("https://gasprice.poa.network/", true);
+// gasPrices("https://blockscout.com/eth/mainnet/api/v1/gas-price-oracle", true);
 // gasPrices("https://www.gasnow.org/api/v3/gas/price", true);
 // gasPrices("https://safe-relay.gnosis.io/api/v1/gas-station/", true);
 // gasPrices("https://api.txprice.com/", true);
 // gasPrices("https://api.metaswap.codefi.network/gasPrices", true);
 // gasPrices("https://www.etherchain.org/api/gasPriceOracle", true);
+// gasPrices(`https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${ETHERSCAN_APIKEY}`, true);
+gasPrices(`https://api.gasprice.io/v1/estimates`, true);
 //GasNow
 //MyCrypto
 //etherscan
-// gasPrices(`https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${ETHERSCAN_APIKEY}`, true);
-gasPrices(`https://api.gasprice.io/v1/estimates`, true);
+//blocknative
 
 
 module.exports = {

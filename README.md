@@ -17,7 +17,7 @@
 
 - [etherscan](https://api.etherscan.io/api)
 - [ethgasstation](https://ethgasstation.info)
-- [poa network](https://gasprice.poa.network/)
+- [blockscout](https://blockscout.com/eth/mainnet/api/v1/gas-price-oracle)
 - [gasnow](https://www.gasnow.org/api/v3/gas/price)
 - [gnosis](https://safe-relay.gnosis.io/api/v1/gas-station/)
 - [txprice](https://api.txprice.com/)
