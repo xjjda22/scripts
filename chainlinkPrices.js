@@ -14,15 +14,29 @@ const { INFURA_APIKEY, ARCHIVENODE_APIKEY } = process.env;
 const ETHEREUM_RPC_URL = `https://api.archivenode.io/${ARCHIVENODE_APIKEY}`;
 const provider = new providers.StaticJsonRpcProvider(ETHEREUM_RPC_URL);
 
+const CHAINLINK_PRICEFEED_ABI = [{ "inputs": [], "name": "decimals", "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "description", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint80", "name": "_roundId", "type": "uint80" }], "name": "getRoundData", "outputs": [{ "internalType": "uint80", "name": "roundId", "type": "uint80" }, { "internalType": "int256", "name": "answer", "type": "int256" }, { "internalType": "uint256", "name": "startedAt", "type": "uint256" }, { "internalType": "uint256", "name": "updatedAt", "type": "uint256" }, { "internalType": "uint80", "name": "answeredInRound", "type": "uint80" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "latestRoundData", "outputs": [{ "internalType": "uint80", "name": "roundId", "type": "uint80" }, { "internalType": "int256", "name": "answer", "type": "int256" }, { "internalType": "uint256", "name": "startedAt", "type": "uint256" }, { "internalType": "uint256", "name": "updatedAt", "type": "uint256" }, { "internalType": "uint80", "name": "answeredInRound", "type": "uint80" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "version", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }];
 
 const CHAINLINK_ETHUSD_CONTRACT_ADDRESS = "0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419";
 const CHAINLINK_BTCUSD_CONTRACT_ADDRESS = "0xf4030086522a5beea4988f8ca5b36dbc97bee88c";
+
+const CHAINLINK_DAIUSD_CONTRACT_ADDRESS = "0xaed0c38402a5d19df6e4c03f4e2dced6e29c1ee9";
+const CHAINLINK_USDTUSD_CONTRACT_ADDRESS = "0x3e7d1eab13ad0104d2750b8863b489d65364e32d";
+const CHAINLINK_USDCUSD_CONTRACT_ADDRESS = "0x8fffffd4afb6115b954bd326cbe7b4ba576818f6";
+
 const CHAINLINK_AAVEUSD_CONTRACT_ADDRESS = "0x547a514d5e3769680ce22b2361c10ea13619e8a9";
-const CHAINLINK_PRICEFEED_ABI = [{ "inputs": [], "name": "decimals", "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "description", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint80", "name": "_roundId", "type": "uint80" }], "name": "getRoundData", "outputs": [{ "internalType": "uint80", "name": "roundId", "type": "uint80" }, { "internalType": "int256", "name": "answer", "type": "int256" }, { "internalType": "uint256", "name": "startedAt", "type": "uint256" }, { "internalType": "uint256", "name": "updatedAt", "type": "uint256" }, { "internalType": "uint80", "name": "answeredInRound", "type": "uint80" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "latestRoundData", "outputs": [{ "internalType": "uint80", "name": "roundId", "type": "uint80" }, { "internalType": "int256", "name": "answer", "type": "int256" }, { "internalType": "uint256", "name": "startedAt", "type": "uint256" }, { "internalType": "uint256", "name": "updatedAt", "type": "uint256" }, { "internalType": "uint80", "name": "answeredInRound", "type": "uint80" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "version", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }];
+
+// const CHAINLINK_BNBUSD_CONTRACT_ADDRESS = "0x0567f2323251f0aab15c8dfb1967e4e8a7d42aee";
 
 const chainLinkETHUSD = new Contract(CHAINLINK_ETHUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
 const chainLinkBTCUSD = new Contract(CHAINLINK_BTCUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
+
+const chainLinkDAIUSD = new Contract(CHAINLINK_DAIUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
+const chainLinkUSDTUSD = new Contract(CHAINLINK_USDTUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
+const chainLinkUSDCUSD = new Contract(CHAINLINK_USDCUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
+
 const chainLinkAAVEUSD = new Contract(CHAINLINK_AAVEUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
+
+// const chainLinkBNBUSD = new Contract(CHAINLINK_BNBUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
 
 const getPriceFeed = async (coin, feed, debug) => {
   
@@ -45,7 +59,14 @@ const getPriceFeed = async (coin, feed, debug) => {
 console.log('start --');
 getPriceFeed('eth', chainLinkETHUSD, true);
 getPriceFeed('btc', chainLinkBTCUSD, true);
+
+getPriceFeed('dai', chainLinkDAIUSD, true);
+getPriceFeed('usdt', chainLinkUSDTUSD, true);
+getPriceFeed('usdc', chainLinkUSDCUSD, true);
+
 getPriceFeed('aave', chainLinkAAVEUSD, true);
+
+// getPriceFeed('bnb', chainLinkBNBUSD, true);
 
 module.exports = {
   getPriceFeed
