@@ -23,7 +23,9 @@ const CHAINLINK_DAIUSD_CONTRACT_ADDRESS = "0xaed0c38402a5d19df6e4c03f4e2dced6e29
 const CHAINLINK_USDTUSD_CONTRACT_ADDRESS = "0x3e7d1eab13ad0104d2750b8863b489d65364e32d";
 const CHAINLINK_USDCUSD_CONTRACT_ADDRESS = "0x8fffffd4afb6115b954bd326cbe7b4ba576818f6";
 
+const CHAINLINK_LINKUSD_CONTRACT_ADDRESS = "0x2c1d072e956affc0d435cb7ac38ef18d24d9127c";
 const CHAINLINK_AAVEUSD_CONTRACT_ADDRESS = "0x547a514d5e3769680ce22b2361c10ea13619e8a9";
+const CHAINLINK_SNXUSD_CONTRACT_ADDRESS = "0xdc3ea94cd0ac27d9a86c180091e7f78c683d3699";
 
 // const CHAINLINK_BNBUSD_CONTRACT_ADDRESS = "0x0567f2323251f0aab15c8dfb1967e4e8a7d42aee";
 
@@ -34,7 +36,9 @@ const chainLinkDAIUSD = new Contract(CHAINLINK_DAIUSD_CONTRACT_ADDRESS, CHAINLIN
 const chainLinkUSDTUSD = new Contract(CHAINLINK_USDTUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
 const chainLinkUSDCUSD = new Contract(CHAINLINK_USDCUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
 
+const chainLinkLINKUSD = new Contract(CHAINLINK_LINKUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
 const chainLinkAAVEUSD = new Contract(CHAINLINK_AAVEUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
+const chainLinkSNXUSD = new Contract(CHAINLINK_SNXUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
 
 // const chainLinkBNBUSD = new Contract(CHAINLINK_BNBUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
 
@@ -64,7 +68,9 @@ getPriceFeed('dai', chainLinkDAIUSD, true);
 getPriceFeed('usdt', chainLinkUSDTUSD, true);
 getPriceFeed('usdc', chainLinkUSDCUSD, true);
 
+getPriceFeed('link', chainLinkLINKUSD, true);
 getPriceFeed('aave', chainLinkAAVEUSD, true);
+getPriceFeed('snx', chainLinkSNXUSD, true);
 
 // getPriceFeed('bnb', chainLinkBNBUSD, true);
 
