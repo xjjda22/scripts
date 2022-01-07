@@ -54,12 +54,12 @@ const gasPricesWithAuth = async (api, token, debug) => {
 // gasPrices("https://www.etherchain.org/api/gasnow", true);
 // gasPrices(`https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${ETHERSCAN_APIKEY}`, true);
 // gasPrices(`https://api.gasprice.io/v1/estimates`, true);
-gasPrices(`https://api.archerdao.io/v1/gas`, true);
+// gasPrices(`https://api.archerdao.io/v1/gas`, true);
 
 //GasNow
 //MyCrypto
 //blocknative 
-// gasPricesWithAuth(`https://api.blocknative.com/gasprices/blockprices`, BLOCKNATIVE_APIKEY, true);
+gasPricesWithAuth(`https://api.blocknative.com/gasprices/blockprices`, BLOCKNATIVE_APIKEY, true);
 
 
 
