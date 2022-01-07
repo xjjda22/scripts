@@ -21,7 +21,7 @@ const gasPrices = async (api, debug) => {
   };
   const res = await axios(config);
   const data = res.data;
-  if(debug) console.log('data -- ',api, data);
+  if(debug) console.log('data -- ',api, deepLogs(data) );
   return data;
 }
 
@@ -35,13 +35,12 @@ const gasPricesWithAuth = async (api, token, debug) => {
     method: 'get',
     responseType: 'json',
     headers : {
-      Authorization : `Bearer ${token}`
+      Authorization : `${token}`
     }
   };
-  console.log(config)
   const res = await axios(config);
   const data = res.data;
-  if(debug) console.log('data -- ',api, data);
+  if(debug) console.log('data -- ',api, deepLogs(data) );
   return data;
 }
 
@@ -60,9 +59,6 @@ const gasPricesWithAuth = async (api, token, debug) => {
 //MyCrypto
 //blocknative 
 gasPricesWithAuth(`https://api.blocknative.com/gasprices/blockprices`, BLOCKNATIVE_APIKEY, true);
-
-
-
 
 module.exports = {
   gasPrices
