@@ -23,6 +23,9 @@
 - [metaswap](https://api.metaswap.codefi.network/gasPrices)
 - [etherchain](https://www.etherchain.org/api/gasnow)
 - [gasprice.io](https://api.gasprice.io)
+- [archerdao](https://api.archerdao.io/v1/gas)
+- [WalletConnect](https://ethereum-api.xyz/gas-prices)
+- [blocknative](https://api.blocknative.com/gasprices/blockprices)
 
 # 🔗 chainlink feeds - chainlinkPrices.js (https://data.chain.link/)
 
