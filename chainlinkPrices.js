@@ -18,6 +18,7 @@ const CHAINLINK_PRICEFEED_ABI = [{ "inputs": [], "name": "decimals", "outputs": 
 
 const CHAINLINK_ETHUSD_CONTRACT_ADDRESS = "0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419";
 const CHAINLINK_BTCUSD_CONTRACT_ADDRESS = "0xf4030086522a5beea4988f8ca5b36dbc97bee88c";
+const CHAINLINK_BCHUSD_CONTRACT_ADDRESS = "0x9f0f69428f923d6c95b781f89e165c9b2df9789d";
 
 const CHAINLINK_DAIUSD_CONTRACT_ADDRESS = "0xaed0c38402a5d19df6e4c03f4e2dced6e29c1ee9";
 const CHAINLINK_USDTUSD_CONTRACT_ADDRESS = "0x3e7d1eab13ad0104d2750b8863b489d65364e32d";
@@ -32,6 +33,7 @@ const CHAINLINK_SNXUSD_CONTRACT_ADDRESS = "0xdc3ea94cd0ac27d9a86c180091e7f78c683
 
 const chainLinkETHUSD = new Contract(CHAINLINK_ETHUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
 const chainLinkBTCUSD = new Contract(CHAINLINK_BTCUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
+const chainLinkBCHUSD = new Contract(CHAINLINK_BCHUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
 
 const chainLinkDAIUSD = new Contract(CHAINLINK_DAIUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
 const chainLinkUSDTUSD = new Contract(CHAINLINK_USDTUSD_CONTRACT_ADDRESS, CHAINLINK_PRICEFEED_ABI, provider);
@@ -65,6 +67,7 @@ const getPriceFeed = async (coin, feed, debug) => {
 console.log('start --');
 getPriceFeed('eth', chainLinkETHUSD, true);
 getPriceFeed('btc', chainLinkBTCUSD, true);
+getPriceFeed('bch', chainLinkBCHUSD, true);
 
 getPriceFeed('dai', chainLinkDAIUSD, true);
 getPriceFeed('usdt', chainLinkUSDTUSD, true);
