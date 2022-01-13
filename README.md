@@ -31,6 +31,7 @@
 
 ETH/USD  (https://etherscan.io/address/0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419)
 BTC/USD  (https://etherscan.io/address/0xf4030086522a5beea4988f8ca5b36dbc97bee88c)
+BCH/USD  (https://etherscan.io/address/0x9f0f69428f923d6c95b781f89e165c9b2df9789d)
 DAI/USD  (https://etherscan.io/address/0xaed0c38402a5d19df6e4c03f4e2dced6e29c1ee9)
 USDT/USD  (https://etherscan.io/address/0x3e7d1eab13ad0104d2750b8863b489d65364e32d)
 USDC/USD  (https://etherscan.io/address/0x8fffffd4afb6115b954bd326cbe7b4ba576818f6)
