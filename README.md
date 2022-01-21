@@ -37,6 +37,8 @@ USDT/USD  (https://etherscan.io/address/0x3e7d1eab13ad0104d2750b8863b489d65364e3
 USDC/USD  (https://etherscan.io/address/0x8fffffd4afb6115b954bd326cbe7b4ba576818f6)
 BUSD/USD  (https://etherscan.io/address/0x833d8eb16d306ed1fbb5d7a2e019e106b960965a)
 LINK/USD (https://etherscan.io/address/0x2c1d072e956affc0d435cb7ac38ef18d24d9127c)
+UNI/USD (https://etherscan.io/address/0x553303d460ee0afb37edff9be42922d8ff63220e)
+SUSHI/USD (https://etherscan.io/address/0xcc70f09a6cc17553b2e31954cd36e4a2d89501f7)
 AAVE/USD (https://etherscan.io/address/0x547a514d5e3769680ce22b2361c10ea13619e8a9)
 SNX/USD (https://etherscan.io/address/0xdc3ea94cd0ac27d9a86c180091e7f78c683d3699)
 
