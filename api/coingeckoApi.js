@@ -31,7 +31,7 @@ let protocols = [
 ];
 
 //https://api.coingecko.com/api/v3/coins/list
-let coinsList = require('./json/coingecko-coins-json.json');
+let coinsList = require('../json/coingecko-coins-json.json');
 // let tokensArr = [];
 // coinsList.map( c => {
 //   if(c.name.toLowerCase().includes('weth') ||
