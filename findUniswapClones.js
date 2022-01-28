@@ -115,6 +115,11 @@ const readNumOfBlocks = async (blockNumber, inc, num, inter, debug) => {
 readNumOfBlocks(UNIV2_CREATION_BLOCKNUMBER, 0, 1000, 5000, true);
 // findMatches(CLONE_UNIV2_ABI,UNIV2_ABI, true);
 
+// clones found through scanning
+// block - 10207935
+// hash - 0x81af8d6b76f4d137e02b16e02360ae6499ac6f00c626285be8623999c6c756c2 
+// contract - 0xe8a97dec33e253d57fa1497b2f98ed0f5bd26fb4
+
 module.exports = {
   readNumOfBlocks
 }
