@@ -91,7 +91,8 @@ const readBlock = async (blockNumber, debug) => {
                 let abi_res = await getABI(a, true);
                 if(abi_res.status == '1'){
                     let ABI = JSON.parse(abi_res.result);
-                    if(findMatches(ABI, UNIV2_ABI).length > 0 ){
+                    // high matches means high possibility clone
+                    if(findMatches(ABI, UNIV2_ABI).length > 10 ){
                         // if(debug) console.log('contract ABI', ABI);
                         contract_trs.push(t);
                     }
