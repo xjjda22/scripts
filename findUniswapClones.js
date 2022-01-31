@@ -111,8 +111,8 @@ const readNumOfBlocks = async (blockNumber, inc, num, inter, debug) => {
         readBlock(blockNumber+inc, true);
     },inter);
 }
-
-readNumOfBlocks(UNIV2_CREATION_BLOCKNUMBER, 0, 1000, 5000, true);
+const LAST_BLOCK_NUM = 10207935;
+readNumOfBlocks(LAST_BLOCK_NUM, 0, 1000, 5000, true);
 // findMatches(CLONE_UNIV2_ABI,UNIV2_ABI, true);
 
 // clones found through scanning
