@@ -111,14 +111,18 @@ const readNumOfBlocks = async (blockNumber, inc, num, inter, debug) => {
         readBlock(blockNumber+inc, true);
     },inter);
 }
-const LAST_BLOCK_NUM = 10207935;
-readNumOfBlocks(LAST_BLOCK_NUM, 0, 1000, 5000, true);
+const LAST_SCANNED_BLOCK = 10208935;
+readNumOfBlocks(LAST_SCANNED_BLOCK, 0, 1000, 5000, true);
 // findMatches(CLONE_UNIV2_ABI,UNIV2_ABI, true);
 
 // clones found through scanning
 // block - 10207935
 // hash - 0x81af8d6b76f4d137e02b16e02360ae6499ac6f00c626285be8623999c6c756c2 
 // contract - 0xe8a97dec33e253d57fa1497b2f98ed0f5bd26fb4
+
+// block - 10208935
+// hash - 0x407d6cf6654cd5b6f6d1f5fddc5174d38df81f2ad010cf801ae773400097886f 
+// contract - 0x61a27dfD4aa512D0666Ac3095ad8918581835f86
 
 module.exports = {
   readNumOfBlocks
