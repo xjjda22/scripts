@@ -65,4 +65,4 @@ const readFiles = async dex => {
 // readFiles('1inch');
 // readFiles('0x');
 // readFiles('kyber');
-readFiles('coingecko-coins');
+// readFiles('coingecko-coins');
