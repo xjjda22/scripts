@@ -2,6 +2,9 @@
 require('dotenv').config();
 const axios = require('axios');
 const { providers, utils } = require("ethers");
+const { Interface } = require("@ethersproject/abi");
+const { addABI, getABIs } = require("abi-decoder");
+const { EVM } = require("evm");
 const { inspect }  = require('util');
 
 const deepLogs = (obj) => {
@@ -15,7 +18,7 @@ const findMatches = (clone, org, debug) => {
     const org_filter = org.filter( b => {
         return b.type == 'function' ? true : false;
     })
-    // if(debug) console.log('abi fn filter',af, ff);
+    // if(debug) console.log('abi fn filter',clone_filter, org_filter);
 
     const finds = org_filter.filter( j => {
         return clone_filter.some( k => {
@@ -25,6 +28,16 @@ const findMatches = (clone, org, debug) => {
     });
     // if(debug) console.log('finds',finds);
     return finds;
+}
+const arrayUnique = (array) => {
+    var a = array.concat();
+    for(var i=0; i<a.length; ++i) {
+        for(var j=i+1; j<a.length; ++j) {
+            if(a[i] === a[j])
+                a.splice(j--, 1);
+        }
+    }
+    return a;
 }
 
 const { INFURA_APIKEY, ARCHIVENODE_APIKEY, ETHERSCAN_APIKEY } = process.env;
@@ -89,16 +102,41 @@ const readBlock = async (blockNumber, debug) => {
         if(t.to == null || t.to == 0){
             // if(debug) console.log('contract trx',t);
             let a = t.creates ? utils.getAddress(t.creates) : null;
+            if(debug) console.log('contract add',t.creates);
             if(a) {
                 let abi_res = await getABI(a, true);
                 if(abi_res.status == '1'){
                     let ABI = JSON.parse(abi_res.result);
-                    let matches = findMatches(ABI, UNIV2_ABI);
+                    if(debug) console.log('contract etherscan abi', ABI);
+
+                    let matches = findMatches(ABI, UNIV2_ABI, true);
                     // high matches means high possibility clone
                     if(matches.length > 10 ){
                         // if(debug) console.log('contract ABI', ABI);
                         if(debug) console.log('contract ABI matches', matches.length);
                         contract_trs.push(t);
+                    }
+                } else if(t.data != ''){
+                    let evm = new EVM(t.data);
+                    if(evm){
+                        let ABIfunctions = evm.getFunctions().map( f => 'function '+ f);
+                        // let ABIevents = evm.getEvents().map( e => 'event '+ e);
+                        // let ABISignatures = arrayUnique(ABIfunctions.concat(ABIevents));
+                        // if(debug) console.log('contract evm abi', ABISignatures);
+                        if(ABIfunctions){
+                            ABIfunctions.map(async s => {
+                                // if(debug) console.log('abi signature', s);
+                                try {
+                                  let i = new Interface([s]);
+                                  await addABI(i.fragments);
+                                } catch (e) {
+                                  console.log(e);
+                                }
+                            });
+                            let ABI = getABIs();
+                            if(debug) console.log('contract ABI', deepLogs(ABI));
+                            let matches = findMatches(ABI, UNIV2_ABI, true);
+                        }
                     }
                 }
             }
@@ -115,8 +153,8 @@ const readNumOfBlocks = async (blockNumber, inc, num, inter, debug) => {
         readBlock(blockNumber+inc, true);
     },inter);
 }
-const LAST_SCANNED_BLOCK = 10209173;
-readNumOfBlocks(LAST_SCANNED_BLOCK, 0, 1000, 5000, true);
+const LAST_SCANNED_BLOCK = 10211736;
+readNumOfBlocks(LAST_SCANNED_BLOCK, 0, 1, 5000, true);
 // findMatches(CLONE_UNIV2_ABI,UNIV2_ABI, true);
 
 // clones found through scanning
