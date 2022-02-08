@@ -107,7 +107,7 @@ const readBlock = async (blockNumber, debug) => {
                 let abi_res = await getABI(a, true);
                 if(abi_res.status == '1'){
                     let ABI = JSON.parse(abi_res.result);
-                    if(debug) console.log('contract etherscan abi', ABI);
+                    // if(debug) console.log('contract etherscan abi', ABI);
 
                     let matches = findMatches(ABI, UNIV2_ABI, true);
                     // high matches means high possibility clone
@@ -134,8 +134,14 @@ const readBlock = async (blockNumber, debug) => {
                                 }
                             });
                             let ABI = getABIs();
-                            if(debug) console.log('contract ABI', deepLogs(ABI));
+                            // if(debug) console.log('contract ABI', deepLogs(ABI));
                             let matches = findMatches(ABI, UNIV2_ABI, true);
+                            // high matches means high possibility clone
+                            if(matches.length > 10 ){
+                                // if(debug) console.log('contract ABI', ABI);
+                                if(debug) console.log('contract ABI matches', matches.length);
+                                contract_trs.push(t);
+                            }
                         }
                     }
                 }
@@ -153,8 +159,8 @@ const readNumOfBlocks = async (blockNumber, inc, num, inter, debug) => {
         readBlock(blockNumber+inc, true);
     },inter);
 }
-const LAST_SCANNED_BLOCK = 10211736;
-readNumOfBlocks(LAST_SCANNED_BLOCK, 0, 1, 5000, true);
+const LAST_SCANNED_BLOCK = 10214484;//latest block - 10212997
+readNumOfBlocks(LAST_SCANNED_BLOCK, 0, 10000, 5000, true);
 // findMatches(CLONE_UNIV2_ABI,UNIV2_ABI, true);
 
 // clones found through scanning
