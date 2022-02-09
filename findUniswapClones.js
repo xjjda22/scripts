@@ -1,11 +1,14 @@
 // findUniswapClones
 require('dotenv').config();
+const fs = require('fs');
 const axios = require('axios');
 const { providers, utils } = require("ethers");
 const { Interface } = require("@ethersproject/abi");
 const { addABI, getABIs } = require("abi-decoder");
 const { EVM } = require("evm");
 const { inspect }  = require('util');
+
+const { block } = require(`./json/uniswap-v2-last-scanned-block.json`);
 
 const deepLogs = (obj) => {
   return inspect(obj, {depth: 5});
@@ -93,8 +96,11 @@ const getABI = async (a, debug) => {
 const readBlock = async (blockNumber, debug) => {
     
     let contract_trs = [];
+    
+    fs.writeFile(`${__dirname}/json/uniswap-v2-last-scanned-block.json`, JSON.stringify({block:blockNumber}), console.error);
+    if(debug) console.log('block',blockNumber);
+
     let block = await getBlock(blockNumber);
-    if(debug) console.log('block',block.number);
     let txs = block.transactions;
     let j=0;
     for(j=0;j<txs.length;j++){
@@ -160,7 +166,9 @@ const readNumOfBlocks = async (blockNumber, inc, num, inter, debug) => {
         readBlock(blockNumber+inc, true);
     },inter);
 }
-const LAST_SCANNED_BLOCK = 10232235;
+
+
+const LAST_SCANNED_BLOCK = block || 10233890;
 getBlockNumber(true);
 readNumOfBlocks(LAST_SCANNED_BLOCK, 0, 3936478, 5000, true);
 // findMatches(CLONE_UNIV2_ABI,UNIV2_ABI, true);
