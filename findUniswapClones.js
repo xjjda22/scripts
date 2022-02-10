@@ -60,11 +60,14 @@ const provider = new providers.StaticJsonRpcProvider(ETHEREUM_RPC_URL);
 // const provider = new providers.JsonRpcProvider(ETHEREUM_RPC_URL);
 // const provider = new providers.getDefaultProvider(ETHEREUM_RPC_URL);
 
+let LATEST_BLOCK = 0;
+
 console.log('start --');
 console.log('ETHEREUM_RPC_URL',ETHEREUM_RPC_URL);
 
 const getBlockNumber = async (debug) => {
     const blockNumber = await provider.getBlockNumber();
+    LATEST_BLOCK = blockNumber;
     if(debug) console.log('latest block',blockNumber);
     if(debug) console.log('blocks not scanned',blockNumber - LAST_SCANNED_BLOCK);
     return blockNumber;
@@ -121,41 +124,58 @@ const readBlock = async (blockNumber, debug) => {
                     if(matches.length > 10 ){
                         // if(debug) console.log('contract ABI', ABI);
                         if(debug) console.log('contract ABI matches', matches.length);
+                        t.ABIMatches = matches.length;
                         contract_trs.push(t);
                     }
-                } else if(t.data != ''){
-                    let evm = new EVM(t.data);
-                    if(evm){
-                        let ABIfunctions = evm.getFunctions().map( f => 'function '+ f);
-                        // let ABIevents = evm.getEvents().map( e => 'event '+ e);
-                        // let ABISignatures = arrayUnique(ABIfunctions.concat(ABIevents));
-                        // if(debug) console.log('contract evm abi', ABISignatures);
-                        if(ABIfunctions){
-                            ABIfunctions.map(async s => {
-                                // if(debug) console.log('abi signature', s);
-                                try {
-                                  let i = new Interface([s]);
-                                  await addABI(i.fragments);
-                                } catch (e) {
-                                  console.log(e);
-                                }
-                            });
-                            let ABI = getABIs();
-                            // if(debug) console.log('contract ABI', deepLogs(ABI));
-                            let matches = findMatches(ABI, UNIV2_ABI, true);
-                            // high matches means high possibility clone
-                            if(matches.length > 10 ){
-                                // if(debug) console.log('contract ABI', ABI);
-                                if(debug) console.log('contract ABI matches', matches.length);
-                                contract_trs.push(t);
-                            }
-                        }
-                    }
-                }
+                } 
+                // else if(t.data != ''){
+                //     let evm = new EVM(t.data);
+                //     if(evm){
+                //         let ABIfunctions = evm.getFunctions().map( f => 'function '+ f);
+                //         // let ABIevents = evm.getEvents().map( e => 'event '+ e);
+                //         // let ABISignatures = arrayUnique(ABIfunctions.concat(ABIevents));
+                //         // if(debug) console.log('contract evm abi', ABISignatures);
+                //         if(ABIfunctions){
+                //             ABIfunctions.map(async s => {
+                //                 // if(debug) console.log('abi signature', s);
+                //                 try {
+                //                   let i = new Interface([s]);
+                //                   await addABI(i.fragments);
+                //                 } catch (e) {
+                //                   console.log(e);
+                //                 }
+                //             });
+                //             let ABI = getABIs();
+                //             // if(debug) console.log('contract ABI', deepLogs(ABI));
+                //             let matches = findMatches(ABI, UNIV2_ABI, true);
+                //             // high matches means high possibility clone
+                //             if(matches.length > 10 ){
+                //                 // if(debug) console.log('contract ABI', ABI);
+                //                 if(debug) console.log('contract ABI matches', matches.length);
+                //                 t.ABIMatches = matches.length;
+                //                 contract_trs.push(t);
+                //             }
+                //         }
+                //     }
+                // }
             }
         }
     }
     if(debug) console.log('contract creation trxs',contract_trs);
+    if(contract_trs.length > 0){
+        contract_trs.map( async c => {
+            let cobj = {
+                "block":c.blockNumber,
+                "hash": c.hash, 
+                "address": c.creates,
+                "ABIMatches": c.ABIMatches
+            }
+            let clonesArr = await require(`./json/uniswap-v2-clones.json`);
+            clonesArr.push(cobj);
+            // if(debug) console.log('clonesArr ',clonesArr);
+            await fs.writeFile(`${__dirname}/json/uniswap-v2-clones.json`, JSON.stringify(clonesArr), console.error);
+        })
+    }
 }
 
 const readNumOfBlocks = async (blockNumber, inc, num, inter, debug) => {
@@ -168,31 +188,31 @@ const readNumOfBlocks = async (blockNumber, inc, num, inter, debug) => {
 }
 
 
-const LAST_SCANNED_BLOCK = block || 10233890;
+const LAST_SCANNED_BLOCK = block || 10236407;
 getBlockNumber(true);
-readNumOfBlocks(LAST_SCANNED_BLOCK, 0, 3936478, 5000, true);
+readNumOfBlocks(LAST_SCANNED_BLOCK, 0, 3934087, 3300, true);
 // findMatches(CLONE_UNIV2_ABI,UNIV2_ABI, true);
 
 // clones found through scanning
 // block - 10207935
 // hash - 0x81af8d6b76f4d137e02b16e02360ae6499ac6f00c626285be8623999c6c756c2 
-// contract add - 0xe8a97dec33e253d57fa1497b2f98ed0f5bd26fb4
-// contract ABI matches - 19
+// address - 0xe8a97dec33e253d57fa1497b2f98ed0f5bd26fb4
+// ABIMatches - 19
 
 // block - 10208935
 // hash - 0x407d6cf6654cd5b6f6d1f5fddc5174d38df81f2ad010cf801ae773400097886f 
-// contract add - 0x61a27dfD4aa512D0666Ac3095ad8918581835f86
-// contract ABI matches - 19
+// address - 0x61a27dfD4aa512D0666Ac3095ad8918581835f86
+// ABIMatches - 19
 
 // block 10214723
 // hash - 0x0067d8b525591f37602696fe976689e89ddb098fcb0d315d9a90b87ef40e9494 
-// contract add 0x96CEe07b886ceeE5b58Bcc4B2cc192b4A77ba31B
-// contract ABI matches 19
+// address 0x96CEe07b886ceeE5b58Bcc4B2cc192b4A77ba31B
+// ABIMatches 19
 
 // block 10227631
 // hash - 0xbe90f23c73bdcd8839eb60730023d8f795bf9b0d988cb458902942903a32f7a7
-// contract add 0xadB090336899B1f0306a1B1D392884Aa87201aBa
-// contract ABI matches 19
+// address 0xadB090336899B1f0306a1B1D392884Aa87201aBa
+// ABIMatches 19
 
 module.exports = {
   readNumOfBlocks
