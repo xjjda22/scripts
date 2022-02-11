@@ -60,14 +60,13 @@ const provider = new providers.StaticJsonRpcProvider(ETHEREUM_RPC_URL);
 // const provider = new providers.JsonRpcProvider(ETHEREUM_RPC_URL);
 // const provider = new providers.getDefaultProvider(ETHEREUM_RPC_URL);
 
-let LATEST_BLOCK = 0;
-
 console.log('start --');
 console.log('ETHEREUM_RPC_URL',ETHEREUM_RPC_URL);
 
 const getBlockNumber = async (debug) => {
     const blockNumber = await provider.getBlockNumber();
     LATEST_BLOCK = blockNumber;
+    PENDING_BLOCK_SCANNED = blockNumber - LAST_SCANNED_BLOCK;
     if(debug) console.log('latest block',blockNumber);
     if(debug) console.log('blocks not scanned',blockNumber - LAST_SCANNED_BLOCK);
     return blockNumber;
@@ -93,6 +92,9 @@ const getABI = async (a, debug) => {
   const res = await axios(config);
   const data = res.data;
   // if(debug) console.log('data -- ',api_url, deepLogs(data) );
+  if(debug) {
+    if(res.status != 200) console.log('res --', deepLogs(data) );
+  }
   return data;
 }
 
@@ -187,10 +189,11 @@ const readNumOfBlocks = async (blockNumber, inc, num, inter, debug) => {
     },inter);
 }
 
+let LATEST_BLOCK = 0, PENDING_BLOCK_SCANNED = 3921768;
+const LAST_SCANNED_BLOCK = block || 10271427;
 
-const LAST_SCANNED_BLOCK = block || 10236407;
 getBlockNumber(true);
-readNumOfBlocks(LAST_SCANNED_BLOCK, 0, 3934087, 3300, true);
+readNumOfBlocks(LAST_SCANNED_BLOCK, 0, PENDING_BLOCK_SCANNED, 3300, true);
 // findMatches(CLONE_UNIV2_ABI,UNIV2_ABI, true);
 
 // clones found through scanning
