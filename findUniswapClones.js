@@ -193,7 +193,7 @@ let LATEST_BLOCK = 0, PENDING_BLOCK_SCANNED = 3921768;
 const LAST_SCANNED_BLOCK = block || 10271427;
 
 getBlockNumber(true);
-readNumOfBlocks(LAST_SCANNED_BLOCK, 0, PENDING_BLOCK_SCANNED, 3300, true);
+readNumOfBlocks(LAST_SCANNED_BLOCK, 0, PENDING_BLOCK_SCANNED, 2000, true);
 // findMatches(CLONE_UNIV2_ABI,UNIV2_ABI, true);
 
 // clones found through scanning
