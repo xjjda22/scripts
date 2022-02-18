@@ -77,16 +77,14 @@ const readBlock = async (blockNumber, debug) => {
                 let abi_res = await getABI(a, true);
                 if(abi_res.status == '1'){
                     let ABI = JSON.parse(abi_res.result);
+                    t.ABI = ABI;
                     // if(debug) console.log('contract etherscan abi', ABI);
-
-                    // if(debug) console.log('contract ABI', ABI);
                     contract_trs.push(t);
-                    
                 } 
             }
         }
     }
-    if(debug) console.log('contract creation trxs',contract_trs);
+    if(debug) console.log('contract creation trxs', deepLogs(contract_trs));
     if(contract_trs.length > 0){
         contract_trs.map( async c => {
             let cobj = {
@@ -94,10 +92,16 @@ const readBlock = async (blockNumber, debug) => {
                 "hash": c.hash, 
                 "address": c.creates
             }
-            let verifiedContractsArr = await require(`./json/verified-contracts-clones.json`);
+            let verifiedContractsArr = await require(`./ethereum-mainnet/verified-contracts-clones.json`);
             verifiedContractsArr.push(cobj);
             // if(debug) console.log('verifiedContractsArr ',verifiedContractsArr);
-            await fs.writeFile(`${__dirname}/json/verified-contracts-clones.json`, JSON.stringify(verifiedContractsArr), console.error);
+
+            // save verified contracts
+            await fs.writeFile(`${__dirname}/ethereum-mainnet/verified-contracts-clones.json`, JSON.stringify(verifiedContractsArr), console.error);
+
+            // save verified contract abi
+            await fs.writeFile(`${__dirname}/ethereum-mainnet/${c.blockNumber}-${c.creates}.json`, JSON.stringify(c.ABI), console.error);
+
         })
     }
 }
@@ -115,6 +119,7 @@ let LATEST_BLOCK = 0, PENDING_BLOCK_SCANNED = 20000;
 let START_SCANNED_BLOCK = 0;
 
 getBlockNumber(20000, true);
+// readNumOfBlocks(14203083-1, 0, 1, 2000, true);
 
 module.exports = {
   readNumOfBlocks
