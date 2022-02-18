@@ -50,3 +50,8 @@ SNX/USD (https://etherscan.io/address/0xdc3ea94cd0ac27d9a86c180091e7f78c683d3699
 - [etherscanScrapper.js](https://etherscan.io/accounts/label/compound) - read verified contracts and save as json file
 - [4byteEventsApi.js](https://www.4byte.directory/api/v1/event-signatures/?format=json) - read contracts event signatures and save as json file
 
+# 🛠 ethereum smart contracts utils
+
+- [findVerifiedContracts.js] - find verified contracts  
+- [findUniswapClones.js] - find uniswap v2 clones
+
