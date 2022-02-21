@@ -52,6 +52,7 @@ SNX/USD (https://etherscan.io/address/0xdc3ea94cd0ac27d9a86c180091e7f78c683d3699
 
 # 🛠 ethereum smart contracts utils
 
+- [mpoolPendingTxs.js] - subscribe mempool transactions
 - [findVerifiedContracts.js] - find verified contracts  
 - [findUniswapClones.js] - find uniswap v2 clones
 
