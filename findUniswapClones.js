@@ -3,12 +3,10 @@ require('dotenv').config();
 const fs = require('fs');
 const axios = require('axios');
 const { providers, utils } = require("ethers");
-const { Interface } = require("@ethersproject/abi");
-const { addABI, getABIs } = require("abi-decoder");
-const { EVM } = require("evm");
+// const { Interface } = require("@ethersproject/abi");
+// const { addABI, getABIs } = require("abi-decoder");
+// const { EVM } = require("evm");
 const { inspect }  = require('util');
-
-const { block } = require(`./json/uniswap-v2-last-scanned-block.json`);
 
 const deepLogs = (obj) => {
   return inspect(obj, {depth: 5});
@@ -63,12 +61,14 @@ const provider = new providers.StaticJsonRpcProvider(ETHEREUM_RPC_URL);
 console.log('start --');
 console.log('ETHEREUM_RPC_URL',ETHEREUM_RPC_URL);
 
-const getBlockNumber = async (debug) => {
+const getBlockNumber = async (n, debug) => {
     const blockNumber = await provider.getBlockNumber();
+    const blocksPerDay = 6600;
     LATEST_BLOCK = blockNumber;
-    PENDING_BLOCK_SCANNED = blockNumber - LAST_SCANNED_BLOCK;
+    START_SCANNED_BLOCK = blockNumber - (n * blocksPerDay);
     if(debug) console.log('latest block',blockNumber);
-    if(debug) console.log('blocks not scanned',blockNumber - LAST_SCANNED_BLOCK);
+    if(debug) console.log('blocks not scanned',START_SCANNED_BLOCK);
+    readNumOfBlocks(START_SCANNED_BLOCK, 0, PENDING_BLOCK_SCANNED, 2000, true);
     return blockNumber;
 }
 
@@ -101,8 +101,6 @@ const getABI = async (a, debug) => {
 const readBlock = async (blockNumber, debug) => {
     
     let contract_trs = [];
-    
-    fs.writeFile(`${__dirname}/json/uniswap-v2-last-scanned-block.json`, JSON.stringify({block:blockNumber}), console.error);
     if(debug) console.log('block',blockNumber);
 
     let block = await getBlock(blockNumber);
@@ -189,11 +187,9 @@ const readNumOfBlocks = async (blockNumber, inc, num, inter, debug) => {
     },inter);
 }
 
-let LATEST_BLOCK = 0, PENDING_BLOCK_SCANNED = 3921768;
-const LAST_SCANNED_BLOCK = block || 10271427;
+let LATEST_BLOCK = 0, START_SCANNED_BLOCK = 0, PENDING_BLOCK_SCANNED = 20000;
 
-getBlockNumber(true);
-readNumOfBlocks(LAST_SCANNED_BLOCK, 0, PENDING_BLOCK_SCANNED, 2000, true);
+getBlockNumber(3, true);
 // findMatches(CLONE_UNIV2_ABI,UNIV2_ABI, true);
 
 // clones found through scanning

@@ -24,10 +24,11 @@ console.log('ETHEREUM_RPC_URL',ETHEREUM_RPC_URL);
 
 const getBlockNumber = async (n, debug) => {
     const blockNumber = await provider.getBlockNumber();
+    const blocksPerDay = 6600;
     LATEST_BLOCK = blockNumber;
-    START_SCANNED_BLOCK = blockNumber - n;
+    START_SCANNED_BLOCK = blockNumber - (n * blocksPerDay);
     if(debug) console.log('latest block',blockNumber);
-    if(debug) console.log('blocks not scanned',blockNumber - n);
+    if(debug) console.log('blocks not scanned',START_SCANNED_BLOCK);
     readNumOfBlocks(START_SCANNED_BLOCK, 0, PENDING_BLOCK_SCANNED, 2000, true);
     return blockNumber;
 }
@@ -115,10 +116,9 @@ const readNumOfBlocks = async (blockNumber, inc, num, inter, debug) => {
     },inter);
 }
 
-let LATEST_BLOCK = 0, PENDING_BLOCK_SCANNED = 20000;
-let START_SCANNED_BLOCK = 0;
+let LATEST_BLOCK = 0, START_SCANNED_BLOCK = 0, PENDING_BLOCK_SCANNED = 20000;
 
-getBlockNumber(20000, true);
+getBlockNumber(3, true);
 // readNumOfBlocks(14203083-1, 0, 1, 2000, true);
 
 module.exports = {
