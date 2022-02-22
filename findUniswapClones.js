@@ -112,7 +112,7 @@ const readBlock = async (blockNumber, debug) => {
         if(t.to == null || t.to == 0){
             // if(debug) console.log('contract trx',t);
             let a = t.creates ? utils.getAddress(t.creates) : null;
-            if(debug) console.log('contract add',t.creates);
+            if(debug) console.log('contract add',a);
             if(a) {
                 let abi_res = await getABI(a, true);
                 if(abi_res.status == '1'){
