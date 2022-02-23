@@ -74,52 +74,95 @@ const FLASHLOANS_ABI = [
         "type": "function"
     },
     {
-        "anonymous": false,
+        "constant": false,
         "inputs":
         [
             {
-                "indexed": true,
-                "internalType": "address",
-                "name": "sender",
-                "type": "address"
+                "components":
+                [
+                    {
+                        "name": "owner",
+                        "type": "address"
+                    },
+                    {
+                        "name": "number",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "accounts",
+                "type": "tuple[]"
             },
             {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "amount0In",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "amount1In",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "amount0Out",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "amount1Out",
-                "type": "uint256"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "to",
-                "type": "address"
+                "components":
+                [
+                    {
+                        "name": "actionType",
+                        "type": "uint8"
+                    },
+                    {
+                        "name": "accountId",
+                        "type": "uint256"
+                    },
+                    {
+                        "components":
+                        [
+                            {
+                                "name": "sign",
+                                "type": "bool"
+                            },
+                            {
+                                "name": "denomination",
+                                "type": "uint8"
+                            },
+                            {
+                                "name": "ref",
+                                "type": "uint8"
+                            },
+                            {
+                                "name": "value",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "amount",
+                        "type": "tuple"
+                    },
+                    {
+                        "name": "primaryMarketId",
+                        "type": "uint256"
+                    },
+                    {
+                        "name": "secondaryMarketId",
+                        "type": "uint256"
+                    },
+                    {
+                        "name": "otherAddress",
+                        "type": "address"
+                    },
+                    {
+                        "name": "otherAccountId",
+                        "type": "uint256"
+                    },
+                    {
+                        "name": "data",
+                        "type": "bytes"
+                    }
+                ],
+                "name": "actions",
+                "type": "tuple[]"
             }
         ],
-        "name": "Swap",
-        "type": "event"
+        "name": "operate",
+        "outputs":
+        [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
     }
 ];
 addABI(FLASHLOANS_ABI);
+
 const UNISWAPV2_USDC = utils.getAddress("0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc");
+const DYDX_SOLOMARGIN = utils.getAddress("0x1E0447b19BB6EcFdAe1e4AE1694b0C3659614e4e");
 
 const ETHERSCAN_ABI_ENDPOINT = a => `https://api.etherscan.io/api?module=contract&action=getabi&address=${a}&apikey=${ETHERSCAN_APIKEY}`;
 
@@ -148,6 +191,11 @@ const getBlock = async (blockNumber, debug) => {
     const block = await provider.getBlockWithTransactions(blockNumber);
     // if(debug) console.log('block',block);
     return block;
+}
+const getTxRc = async (hash, debug) => {
+    const tx = await provider.getTransactionReceipt(hash);
+    if(debug) console.log('tx',tx);
+    return tx;
 }
 
 const getABI = async (a, debug) => {
@@ -222,7 +270,7 @@ const readNumOfBlocks = async (blockNumber, inc, num, inter, debug) => {
 
 let LATEST_BLOCK = 0, START_SCANNED_BLOCK = 0, PENDING_BLOCK_SCANNED = 10000;
 
-getBlockNumber(1, true);
+// getBlockNumber(1, true);
 // readNumOfBlocks(14241915-1, 0, 1, 2000, true);
 
 // scanned uniswap v2 flashswap
