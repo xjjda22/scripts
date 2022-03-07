@@ -39,7 +39,8 @@
 - AAVE/USD (https://etherscan.io/address/0x547a514d5e3769680ce22b2361c10ea13619e8a9)
 - SNX/USD (https://etherscan.io/address/0xdc3ea94cd0ac27d9a86c180091e7f78c683d3699)
 
-# 🔗 uniswap v2 subgraph - uniswapV2SubGraph.js (https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2)
+# 🔗 subgraph api - 
+- uniswapV2SubGraph.js (https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2)
 
 # 🛠 utils 
 - [tokensnifferScrapper.js](https://tokensniffer.com/) - read tokens and save as json file
