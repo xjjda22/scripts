@@ -6,4 +6,5 @@
 yarn.lock
 /json
 /ethereum-mainnet
+/ethereum-mainnet-contracts
 package-lock.json
