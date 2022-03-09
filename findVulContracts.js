@@ -1,16 +1,23 @@
 // findVulContracts
 
+// EVM disassembler
+// https://github.com/Arachnid/evmdis
+// https://github.com/crytic/ethersplay
+// https://github.com/MrLuit/evm
+// https://github.com/crytic/pyevmasm
+// https://github.com/tintinweb/ethereum-dasm
+// https://github.com/ethereum/evmdasm
+
+// EVM decompiler
 // https://github.com/eveem-org/panoramix
 // https://github.com/ConsenSys/mythril
 // https://github.com/trailofbits/manticore
 // https://github.com/crytic/slither
-// https://github.com/crytic/pyevmasm
-// https://github.com/tintinweb/ethereum-dasm
-// https://github.com/Arachnid/evmdis
 
-// https://github.com/MrLuit/evm
+// examples
 // https://github.com/MrLuit/selfdestruct-detect
 
+// misc
 // https://github.com/statechannels/bytecode-debugger
 // https://github.com/0xalpharush/evm-disassembler
 
@@ -20,6 +27,7 @@
 // slither mycontract.sol
 // python3 panoramix.py 0x41f83F6F25Eb0D3eB9615Ab7BbBf995E7f7fbA4F
 // python3 -m ethereum_dasm -a 0x41f83F6F25Eb0D3eB9615Ab7BbBf995E7f7fbA4F -A --no-color 
+// echo -n "608060405260043610603f57600035" | evmasm -d
 
 require('dotenv').config();
 const fs = require('fs');
@@ -29,6 +37,10 @@ const { Interface } = require("@ethersproject/abi");
 const { addABI, getABIs } = require("abi-decoder");
 const { EVM } = require("evm");
 const { inspect }  = require('util');
+const exec = require('child_process').exec;
+const execute = (command, callback) => {
+    exec(command, function(error, stdout, stderr){ callback(stdout); });
+};
 
 const deepLogs = (obj) => {
   return inspect(obj, {depth: 5});
@@ -47,31 +59,20 @@ const provider = new providers.StaticJsonRpcProvider(ETHEREUM_RPC_URL);
 console.log('start --');
 console.log('ETHEREUM_RPC_URL',ETHEREUM_RPC_URL);
 
-const STOP = 0x00;
-const JUMPDEST = 0x5b;
-const PUSH1 = 0x60;
-const PUSH32 = 0x7f;
-const RETURN = 0xf3;
-const REVERT = 0xfd;
-const INVALID = 0xfe;
-const SELFDESTRUCT = 0xff;
-
-const isHalting = (opcode) => [ STOP, RETURN, REVERT, INVALID, SELFDESTRUCT ].includes(opcode);
-const isPUSH = (opcode) => opcode >= PUSH1 && opcode <= PUSH32;
-
-const checkSelfdestruct = (code) => {
-    const bytecode = Buffer.from(code, 'hex');
-    let halted = false;
-    for (let index = 0; index < bytecode.length; index++) {
-        const opcode = bytecode[index];
-        if(opcode === SELFDESTRUCT && !halted) {
+const checkSelfdestruct = (codes) => {
+    let i = 0;
+    const cl = codes.length;
+    for (i = 0; i < cl; i++) {
+        let st = codes[i].split(':');
+        let opcode = st[1] ? st[1].trim() : null;
+        if(opcode === "SELFDESTRUCT") {
             return true;
-        } else if(opcode === JUMPDEST) {
-            halted = false;
-        } else if(isHalting(opcode)) {
-            halted = true;
-        } else if(isPUSH(opcode)) {
-            index += opcode - PUSH1 + 0x01;
+        } 
+        else if(opcode === "BALANCE"){
+            
+        } 
+        else if(opcode === "ADDRESS"){
+            
         }
     }
     return false;
@@ -126,22 +127,30 @@ const readBlock = async (blockNumber, debug) => {
         let t = txs[j];
         // if(debug) console.log('j',j);
         if(t.to == null || t.to == 0){
-            // if(debug) console.log('contract trx',t);
             let a = t.creates ? utils.getAddress(t.creates) : null;
+
+            // if(debug) console.log('contract trx',t);
             // if(debug) console.log('contract add',a);
             
-            let evm = new EVM(t.data);
-            if(evm){
-                // t.byteCode = evm.getBytecode();
-                t.opCodes = evm.getOpcodes();
-                t.jumpDestinations = evm.getJumpDestinations();
-                t.interpretedCodes = evm.parse();
-                t.solCodes = evm.decompile();
+            // let evm = new EVM(t.data);
+            // if(evm){
+            //     // t.byteCode = evm.getBytecode();
+            //     t.opCodes = evm.getOpcodes();
+            //     t.jumpDestinations = evm.getJumpDestinations();
+            //     t.interpretedCodes = evm.parse();
+            //     t.solCodes = evm.decompile();
 
-                t.selfDestruct  = checkSelfdestruct(t.data);
+            //     t.selfDestruct  = checkSelfdestruct(t.opCodes);
 
+            //     if(t.selfDestruct) contract_trs.push(t);
+            // }
+
+            await execute(`echo -n ${t.data} | evmasm -d`, async (opCodes)=> {
+                t.opCodes = opCodes.split('\n');
+                t.selfDestruct  = checkSelfdestruct(t.opCodes);
                 if(t.selfDestruct) contract_trs.push(t);
-            }
+                if(debug) console.log('contract trx',t);
+            })
         }
     }
     if(debug) console.log('contract creation trxs', deepLogs(contract_trs));
@@ -153,9 +162,9 @@ const readBlock = async (blockNumber, debug) => {
                 "address": c.creates,
                 "byteCode": c.data,
                 "opCodes": c.opCodes,
-                "jumpDestinations": c.jumpDestinations,
-                "interpretedCodes": c.interpretedCodes,
-                "solCodes": c.interpretedCodes,
+                // "jumpDestinations": c.jumpDestinations,
+                // "interpretedCodes": c.interpretedCodes,
+                // "solCodes": c.interpretedCodes,
                 "selfDestruct": c.selfDestruct
 
             }
@@ -185,7 +194,10 @@ const readNumOfBlocks = async (blockNumber, inc, num, inter, debug) => {
 let LATEST_BLOCK = 0, START_SCANNED_BLOCK = 0, PENDING_BLOCK_SCANNED = 20000;
 
 getBlockNumber(3, true);
-// readNumOfBlocks(14325849-1, 0, 1, 2000, true);
+// readNumOfBlocks(14329929-1, 0, 1, 2000, true);
+// execute("echo -n 608060405260043610603f57600035 | evmasm -d", (o)=>{
+//     console.log(o);
+// })
 
 module.exports = {
   readNumOfBlocks
