@@ -13,6 +13,7 @@
 // https://github.com/ConsenSys/mythril
 // https://github.com/trailofbits/manticore
 // https://github.com/crytic/slither
+// https://github.com/crytic/rattle
 
 // examples
 // https://github.com/MrLuit/selfdestruct-detect
@@ -20,7 +21,6 @@
 // misc
 // https://github.com/statechannels/bytecode-debugger
 // https://github.com/0xalpharush/evm-disassembler
-
 
 // myth analyze -a 0x41f83F6F25Eb0D3eB9615Ab7BbBf995E7f7fbA4F --infura-id 460f40a260564ac4a4f4b3fffb032dad
 // python3 -m ethereum_dasm -a 0x41f83F6F25Eb0D3eB9615Ab7BbBf995E7f7fbA4F
@@ -68,12 +68,6 @@ const checkSelfdestruct = (codes) => {
         if(opcode === "SELFDESTRUCT") {
             return true;
         } 
-        else if(opcode === "BALANCE"){
-            
-        } 
-        else if(opcode === "ADDRESS"){
-            
-        }
     }
     return false;
 }
