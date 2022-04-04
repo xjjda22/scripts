@@ -15,6 +15,9 @@
 // https://github.com/crytic/slither
 // https://github.com/crytic/rattle
 
+// EVM decompiler api
+// http://eveem.org/code/0x06012c8cf97bead5deae237070f9587f8e7a266d.json 
+
 // examples
 // https://github.com/MrLuit/selfdestruct-detect
 
@@ -59,13 +62,13 @@ const provider = new providers.StaticJsonRpcProvider(ETHEREUM_RPC_URL);
 console.log('start --');
 console.log('ETHEREUM_RPC_URL',ETHEREUM_RPC_URL);
 
-const checkSelfdestruct = (codes) => {
+const checkOp = (codes, op) => {
     let i = 0;
     const cl = codes.length;
     for (i = 0; i < cl; i++) {
         let st = codes[i].split(':');
         let opcode = st[1] ? st[1].trim() : null;
-        if(opcode === "SELFDESTRUCT") {
+        if(opcode === op) {
             return true;
         } 
     }
@@ -134,14 +137,14 @@ const readBlock = async (blockNumber, debug) => {
             //     t.interpretedCodes = evm.parse();
             //     t.solCodes = evm.decompile();
 
-            //     t.selfDestruct  = checkSelfdestruct(t.opCodes);
+            //     t.selfDestruct  = checkOp(t.opCodes, "SELFDESTRUCT");
 
             //     if(t.selfDestruct) contract_trs.push(t);
             // }
 
             await execute(`echo -n ${t.data} | evmasm -d`, async (opCodes)=> {
                 t.opCodes = opCodes.split('\n');
-                t.selfDestruct  = checkSelfdestruct(t.opCodes);
+                t.selfDestruct  = checkOp(t.opCodes, "SELFDESTRUCT");
                 if(t.selfDestruct) contract_trs.push(t);
                 if(debug) console.log('contract trx',t);
             })
