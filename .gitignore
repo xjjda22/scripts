@@ -7,4 +7,6 @@ yarn.lock
 /json
 /ethereum-mainnet
 /ethereum-mainnet-contracts
+/vanity-address-generator/artifacts*
+/vanity-address-generator/cache*
 package-lock.json
