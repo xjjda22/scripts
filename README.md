@@ -53,6 +53,11 @@
 - [findUniswapClones.js] - find uniswap v2 clones
 - [findFlashLoanTxs.js] - find uniswap v2 and v3 flash loans trxs
 
+# 🛠 token utils
+- [fetchTokens.js] - read tokens and save as json file (coingecko, 1inch, 0x, kyber)
+- [fetchMarketPairs.js] - read market pairs and save as json file (uniswap, sushiswap)
+- [findToken.js] - find token by address  
+
 # 🛠 contact vanity address (create2) 
 - [findVanityAddress.js] - find vanity address generator with leading zeros
 
