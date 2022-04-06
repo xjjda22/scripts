@@ -4,7 +4,9 @@
 
 //ex - node fetchMarketPairs.js
 
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({path:path.resolve('../', '.env')});
+
 const fs = require('fs');
 const axios = require('axios');
 const { Contract, providers } = require("ethers");

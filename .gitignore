@@ -4,7 +4,11 @@
 .vscode
 .env*
 yarn.lock
+
 /json
+/util/json
+/token/json
+
 /ethereum-mainnet
 /ethereum-mainnet-contracts
 /vanity-address-generator/artifacts*
