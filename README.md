@@ -53,3 +53,6 @@
 - [findUniswapClones.js] - find uniswap v2 clones
 - [findFlashLoanTxs.js] - find uniswap v2 and v3 flash loans trxs
 
+# 🛠 contact vanity address (create2) 
+- [findVanityAddress.js] - find vanity address generator with leading zeros
+
