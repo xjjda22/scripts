@@ -1,8 +1,8 @@
 //app
 const { getEthPrice } = require( "./uniswapV2SubGraph");
-const { getUSDPrice } = require( "./cryptoCompareApi");
-const { getToken } = require( "./findToken");
-const { getBlocks } = require( "./fbBlocks");
+const { getUSDPrice } = require( "./api/cryptoCompareApi");
+const { getBlocks } = require( "./api/fbBlocks");
+const { getToken } = require( "./token/findToken");
 const { getReceipts } = require( "./trxReceipts");
 
 getEthPrice(true);

@@ -5,9 +5,9 @@
 const { addABI, decodeLogs } = require("abi-decoder");
 const { Interface } = require("@ethersproject/abi");
 
-const { getToken } = require("./findToken");
+const { getToken } = require("./token/findToken");
 const { getEthPrice, getPairAddress } = require("./uniswapV2SubGraph"); 
-const { getUSDPrice } = require("./cryptoCompareApi"); 
+const { getUSDPrice } = require("./api/cryptoCompareApi"); 
 
 const eventsJson = require("./ABIEvents");
 
