@@ -6,6 +6,7 @@
 yarn.lock
 
 /json
+/api/json
 /util/json
 /token/json
 
