@@ -167,15 +167,15 @@ const readBlock = async (blockNumber, debug) => {
                 "selfDestruct": c.selfDestruct
 
             }
-            let vulContractsArr = await require(`./ethereum-mainnet-contracts/vul-contracts-clones.json`);
+            let vulContractsArr = await require(`./json/vul-contracts-clones.json`);
             vulContractsArr.push(cobj);
             if(debug) console.log('vulContractsArr ',vulContractsArr);
 
             // save vul contracts
-            await fs.writeFile(`${__dirname}/ethereum-mainnet-contracts/verified-contracts-clones.json`, JSON.stringify(vulContractsArr), console.error);
+            await fs.writeFile(`${__dirname}/json/verified-contracts-clones.json`, JSON.stringify(vulContractsArr), console.error);
 
             // save vul contract abi
-            await fs.writeFile(`${__dirname}/ethereum-mainnet-contracts/${c.blockNumber}-${c.creates}.json`, JSON.stringify(c), console.error);
+            await fs.writeFile(`${__dirname}/json/${c.blockNumber}-${c.creates}.json`, JSON.stringify(c), console.error);
 
         })
     }

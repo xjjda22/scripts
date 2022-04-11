@@ -1,5 +1,7 @@
 // findVerifiedContracts
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({path:path.resolve('../', '.env')});
+
 const fs = require('fs');
 const axios = require('axios');
 const { providers, utils } = require("ethers");
@@ -93,15 +95,15 @@ const readBlock = async (blockNumber, debug) => {
                 "hash": c.hash, 
                 "address": c.creates
             }
-            let verifiedContractsArr = await require(`./ethereum-mainnet/verified-contracts-clones.json`);
+            let verifiedContractsArr = await require(`./json/verified-contracts-clones.json`);
             verifiedContractsArr.push(cobj);
             // if(debug) console.log('verifiedContractsArr ',verifiedContractsArr);
 
             // save verified contracts
-            await fs.writeFile(`${__dirname}/ethereum-mainnet/verified-contracts-clones.json`, JSON.stringify(verifiedContractsArr), console.error);
+            await fs.writeFile(`${__dirname}/json/verified-contracts-clones.json`, JSON.stringify(verifiedContractsArr), console.error);
 
             // save verified contract abi
-            await fs.writeFile(`${__dirname}/ethereum-mainnet/${c.blockNumber}-${c.creates}.json`, JSON.stringify(c.ABI), console.error);
+            await fs.writeFile(`${__dirname}/json/${c.blockNumber}-${c.creates}.json`, JSON.stringify(c.ABI), console.error);
 
         })
     }

@@ -9,9 +9,11 @@ yarn.lock
 /api/json
 /util/json
 /token/json
+/hardhat/json
 
-/ethereum-mainnet
-/ethereum-mainnet-contracts
+/hardhat/contracts*
+/hardhat/contracts*
 /hardhat/artifacts*
 /hardhat/cache*
+
 package-lock.json
