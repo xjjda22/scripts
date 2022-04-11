@@ -32,7 +32,9 @@
 // python3 -m ethereum_dasm -a 0x41f83F6F25Eb0D3eB9615Ab7BbBf995E7f7fbA4F -A --no-color 
 // echo -n "608060405260043610603f57600035" | evmasm -d
 
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({path:path.resolve('../', '.env')});
+
 const fs = require('fs');
 const axios = require('axios');
 const { providers, utils } = require("ethers");
