@@ -50,6 +50,7 @@
 # 🛠 ethereum smart contracts utils
 - [mpoolPendingTxs.js] - subscribe mempool transactions
 - [findVerifiedContracts.js] - find verified contracts  
+- [findVulContracts.js] - find smart contracts vulnerabilities (bytecode analyzer using Mythril:https://github.com/ConsenSys/mythril) 
 - [findUniswapClones.js] - find uniswap v2 clones
 - [findFlashLoanTxs.js] - find uniswap v2 and v3 flash loans trxs
 
@@ -58,6 +59,6 @@
 - [fetchMarketPairs.js] - read market pairs and save as json file (uniswap, sushiswap)
 - [findToken.js] - find token by address  
 
-# 🛠 contact vanity address (create2) 
+# 🛠 contract vanity address (create2) 
 - [findVanityAddress.js] - find vanity address generator with leading zeros
 

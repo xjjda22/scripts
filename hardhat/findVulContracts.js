@@ -170,41 +170,36 @@ const readBlock = async (blockNumber, debug) => {
 
             await execute(`myth analyze -c ${t.data} --execution-timeout 120 `, async (res) => {
                 t.analyze = res;
-                if(res.length > 67) contract_trs.push(t);
+                if(res.length <= 67) return;
 
                 if(debug) console.log('myth analyze contract ',res);
                 // if(debug) console.log('myth analyze contract ',typeof res, res.length);
                 // if(debug) console.log('contract address',t.creates);
+
+                let cobj = {
+                    "block":t.blockNumber,
+                    "hash": t.hash, 
+                    "address": t.creates,
+                    "byteCode": t.data,
+                    // "opCodes": t.opCodes,
+                    // "jumpDestinations": t.jumpDestinations,
+                    // "interpretedCodes": t.interpretedCodes,
+                    // "solCodes": t.interpretedCodes,
+                    // "selfDestruct": t.selfDestruct,
+                    "analyze": t.analyze
+
+                }
+                let vulContractsArr = await require(`./json/vul-contracts-clones.json`);
+                vulContractsArr.push(cobj);
+                // if(debug) console.log('vulContractsArr ',vulContractsArr);
+
+                // save vul contracts
+                await fs.writeFile(`${__dirname}/json/vul-contracts-clones.json`, JSON.stringify(vulContractsArr), console.error);
+
+                // save vul contract abi
+                await fs.writeFile(`${__dirname}/json/${t.blockNumber}-${t.creates}-vul.json`, JSON.stringify(t), console.error);
             })
         }
-    }
-    if(debug) console.log('contract creation trxs', deepLogs(contract_trs));
-    if(contract_trs.length > 0){
-        contract_trs.map( async c => {
-            let cobj = {
-                "block":c.blockNumber,
-                "hash": c.hash, 
-                "address": c.creates,
-                "byteCode": c.data,
-                // "opCodes": c.opCodes,
-                // "jumpDestinations": c.jumpDestinations,
-                // "interpretedCodes": c.interpretedCodes,
-                // "solCodes": c.interpretedCodes,
-                // "selfDestruct": c.selfDestruct,
-                "analyze": c.analyze
-
-            }
-            let vulContractsArr = await require(`./json/vul-contracts-clones.json`);
-            vulContractsArr.push(cobj);
-            if(debug) console.log('vulContractsArr ',vulContractsArr);
-
-            // save vul contracts
-            await fs.writeFile(`${__dirname}/json/vul-contracts-clones.json`, JSON.stringify(vulContractsArr), console.error);
-
-            // save vul contract abi
-            await fs.writeFile(`${__dirname}/json/${c.blockNumber}-${c.creates}-vul.json`, JSON.stringify(c), console.error);
-
-        })
     }
 }
 
