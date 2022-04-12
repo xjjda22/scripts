@@ -171,7 +171,7 @@ const readBlock = async (blockNumber, debug) => {
             await execute(`myth analyze -c ${t.data} --execution-timeout 120 `, async (res) => {
                 t.analyze = res;
                 if(res.length > 67) contract_trs.push(t);
-                
+
                 if(debug) console.log('myth analyze contract ',res);
                 // if(debug) console.log('myth analyze contract ',typeof res, res.length);
                 // if(debug) console.log('contract address',t.creates);
@@ -186,11 +186,12 @@ const readBlock = async (blockNumber, debug) => {
                 "hash": c.hash, 
                 "address": c.creates,
                 "byteCode": c.data,
-                "opCodes": c.opCodes,
+                // "opCodes": c.opCodes,
                 // "jumpDestinations": c.jumpDestinations,
                 // "interpretedCodes": c.interpretedCodes,
                 // "solCodes": c.interpretedCodes,
-                "selfDestruct": c.selfDestruct
+                // "selfDestruct": c.selfDestruct,
+                "analyze": c.analyze
 
             }
             let vulContractsArr = await require(`./json/vul-contracts-clones.json`);
@@ -198,10 +199,10 @@ const readBlock = async (blockNumber, debug) => {
             if(debug) console.log('vulContractsArr ',vulContractsArr);
 
             // save vul contracts
-            await fs.writeFile(`${__dirname}/json/verified-contracts-clones.json`, JSON.stringify(vulContractsArr), console.error);
+            await fs.writeFile(`${__dirname}/json/vul-contracts-clones.json`, JSON.stringify(vulContractsArr), console.error);
 
             // save vul contract abi
-            await fs.writeFile(`${__dirname}/json/${c.blockNumber}-${c.creates}.json`, JSON.stringify(c), console.error);
+            await fs.writeFile(`${__dirname}/json/${c.blockNumber}-${c.creates}-vul.json`, JSON.stringify(c), console.error);
 
         })
     }
