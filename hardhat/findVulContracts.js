@@ -6,7 +6,6 @@
 // https://github.com/MrLuit/evm
 // https://github.com/crytic/pyevmasm
 // https://github.com/tintinweb/ethereum-dasm
-// https://github.com/ethereum/evmdasm
 
 // EVM decompiler
 // https://github.com/eveem-org/panoramix
@@ -14,23 +13,39 @@
 // https://github.com/trailofbits/manticore
 // https://github.com/crytic/slither
 // https://github.com/crytic/rattle
+// https://github.com/tintinweb/ethereum-dasm
+// https://github.com/muellerberndt/sabre
+// https://github.com/pventuzelo/octopus
 
-// EVM decompiler api
-// http://eveem.org/code/0x06012c8cf97bead5deae237070f9587f8e7a266d.json 
 
 // examples
 // https://github.com/MrLuit/selfdestruct-detect
+
+// EVM decompiler api
+// http://eveem.org/code/0x06012c8cf97bead5deae237070f9587f8e7a266d.json 
 
 // misc
 // https://github.com/statechannels/bytecode-debugger
 // https://github.com/0xalpharush/evm-disassembler
 
-// myth analyze -a 0x41f83F6F25Eb0D3eB9615Ab7BbBf995E7f7fbA4F --infura-id 460f40a260564ac4a4f4b3fffb032dad
-// python3 -m ethereum_dasm -a 0x41f83F6F25Eb0D3eB9615Ab7BbBf995E7f7fbA4F
+// examples
+// https://github.com/ConsenSys/mythril
+// myth analyze -a 0x41f83F6F25Eb0D3eB9615Ab7BbBf995E7f7fbA4F --infura-id 460f40a260564ac4a4f4b3fffb032dad --execution-timeout 20 -m AccidentallyKillable
+// myth analyze -c 608060405260043610603f57600035 --execution-timeout 20 -m AccidentallyKillable
+
+// https://github.com/crytic/slither
 // slither mycontract.sol
+
+// https://github.com/eveem-org/panoramix
 // python3 panoramix.py 0x41f83F6F25Eb0D3eB9615Ab7BbBf995E7f7fbA4F
-// python3 -m ethereum_dasm -a 0x41f83F6F25Eb0D3eB9615Ab7BbBf995E7f7fbA4F -A --no-color 
+
+// https://github.com/crytic/pyevmasm
 // echo -n "608060405260043610603f57600035" | evmasm -d
+
+// https://github.com/tintinweb/ethereum-dasm
+// echo "608060405260043610603f57600035" | python3 -m ethereum_dasm
+// python3 -m ethereum_dasm -a 0x41f83F6F25Eb0D3eB9615Ab7BbBf995E7f7fbA4F
+// python3 -m ethereum_dasm -a 0x41f83F6F25Eb0D3eB9615Ab7BbBf995E7f7fbA4F -A --no-color 
 
 const path = require('path');
 require('dotenv').config({path:path.resolve('../', '.env')});
@@ -144,11 +159,22 @@ const readBlock = async (blockNumber, debug) => {
             //     if(t.selfDestruct) contract_trs.push(t);
             // }
 
-            await execute(`echo -n ${t.data} | evmasm -d`, async (opCodes)=> {
-                t.opCodes = opCodes.split('\n');
-                t.selfDestruct  = checkOp(t.opCodes, "SELFDESTRUCT");
-                if(t.selfDestruct) contract_trs.push(t);
-                if(debug) console.log('contract trx',t);
+            // await execute(`echo -n ${t.data} | evmasm -d`, async (resOpCodes) => {
+            //     t.opCodes = resOpCodes.split('\n');
+            //     t.selfDestruct  = checkOp(t.opCodes, "SELFDESTRUCT");
+            //     if(t.selfDestruct) contract_trs.push(t);
+
+            //     if(debug) console.log('contract opCodes',resOpCodes);
+            //     if(debug) console.log('contract address',t.creates);
+            // })
+
+            await execute(`myth analyze -c ${t.data} --execution-timeout 120 `, async (res) => {
+                t.analyze = res;
+                if(res.length > 67) contract_trs.push(t);
+                
+                if(debug) console.log('myth analyze contract ',res);
+                // if(debug) console.log('myth analyze contract ',typeof res, res.length);
+                // if(debug) console.log('contract address',t.creates);
             })
         }
     }
