@@ -168,13 +168,13 @@ const readBlock = async (blockNumber, debug) => {
             //     if(debug) console.log('contract address',t.creates);
             // })
 
-            await execute(`myth analyze -c ${t.data} --execution-timeout 120 `, async (res) => {
+            await execute(`myth analyze -c ${t.data} --execution-timeout 150 `, async (res) => {
                 t.analyze = res;
                 if(res.length <= 67) return;
 
                 if(debug) console.log('myth analyze contract ',res);
                 // if(debug) console.log('myth analyze contract ',typeof res, res.length);
-                // if(debug) console.log('contract address',t.creates);
+                if(debug) console.log('contract address',t.creates);
 
                 let cobj = {
                     "block":t.blockNumber,
