@@ -17,6 +17,10 @@
 // https://github.com/muellerberndt/sabre
 // https://github.com/pventuzelo/octopus
 
+// EVM fuzzer
+// https://github.com/crytic/echidna
+// https://github.com/palkeo/pakala
+
 
 // examples
 // https://github.com/MrLuit/selfdestruct-detect

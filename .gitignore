@@ -10,11 +10,15 @@ yarn.lock
 /util/json
 /token/json
 
-/hardhat/contracts*
+/hardhat/*
 /hardhat/artifacts*
 /hardhat/cache*
 /hardhat/mnemonic*
 /hardhat/json*
+
+foundry/cache*
+foundry/out*
+foundry/.gas-snapshot
 
 # yarn / eslint
 .yarn/cache
