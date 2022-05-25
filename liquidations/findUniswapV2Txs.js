@@ -675,10 +675,10 @@ const readBlock = async (blockNumber, debug) => {
                 "address": c.to,
                 "input": c.decodeMethod
             }
-            let clonesArr = await require(`./json/liquidations-trxs-clones.json`);
+            let clonesArr = await require(`./json/liquidations-trxs.json`);
             clonesArr.push(cobj);
             // if(debug) console.log('clonesArr ',clonesArr);
-            await fs.writeFile(`${__dirname}/json/liquidations-trxs-clones.json`, JSON.stringify(clonesArr), console.error);
+            await fs.writeFile(`${__dirname}/json/liquidations-trxs.json`, JSON.stringify(clonesArr), console.error);
         })
     }
 }
@@ -694,13 +694,13 @@ const readNumOfBlocks = async (blockNumber, inc, num, inter, debug) => {
 
 let LATEST_BLOCK = 0, START_SCANNED_BLOCK = 0, PENDING_BLOCK_SCANNED = 10000;
 
-// getBlockNumber(1, true);
-readNumOfBlocks(14839482-1, 0, 1, 2000, true);
+getBlockNumber(1, true);
+// readNumOfBlocks(14839482-1, 0, 1, 2000, true);
 
 // scanned uniswap v2 liquidation trx
-// "block": 14092755,
-// "hash": "0x284101ec1389344b360d10caa9a5c8be8fc75fe87c0a3273a0716539b5357ffd",
-// "address": "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc",
+// "block": 14839482,
+// "hash": "0x7e7d19f4df364b3524dfb7d52eda9b7920078cd7376eba563db9058a900948b0",
+// "address": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
 
 module.exports = {
   readNumOfBlocks
