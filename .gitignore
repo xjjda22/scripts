@@ -9,6 +9,7 @@ yarn.lock
 /api/json
 /util/json
 /token/json
+/liquidations/json
 
 /hardhat/*
 /hardhat/artifacts*
