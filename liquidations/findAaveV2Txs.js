@@ -197,13 +197,13 @@ const readNumOfBlocks = async (blockNumber, inc, num, inter, debug) => {
 
 let LATEST_BLOCK = 0, START_SCANNED_BLOCK = 0, PENDING_BLOCK_SCANNED = 10000;
 
-// getBlockNumber(1, true);
-readNumOfBlocks(14874872-1, 0, 1, 2000, true);
+getBlockNumber(1, true);
+// readNumOfBlocks(14874872-1, 0, 1, 2000, true);
 
 // scanned aave v2 liquidation trx
-// "block": 14874871,
-// "hash": "0x9203452159fe657cf7f6f4fe7e60748e8f41e3e3e88df2e40344e9d2b84c2519",
-// "address": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+// "block": ,
+// "hash": "",
+// "address": "",
 
 module.exports = {
   readNumOfBlocks
