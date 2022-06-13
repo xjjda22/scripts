@@ -675,10 +675,10 @@ const readBlock = async (blockNumber, debug) => {
                 "address": c.to,
                 "input": c.decodeMethod
             }
-            let clonesArr = await require(`./json/liquidations-trxs.json`);
+            let clonesArr = await require(`./json/uniswapv2-liquidations-trxs.json`);
             clonesArr.push(cobj);
             // if(debug) console.log('clonesArr ',clonesArr);
-            await fs.writeFile(`${__dirname}/json/liquidations-trxs.json`, JSON.stringify(clonesArr), console.error);
+            await fs.writeFile(`${__dirname}/json/uniswapv2-liquidations-trxs.json`, JSON.stringify(clonesArr), console.error);
         })
     }
 }
