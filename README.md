@@ -54,6 +54,8 @@
 - [findUniswapClones.js] - find uniswap v2 clones
 - [findFlashLoanTxs.js] - find uniswap v2 and v3 flash loans trxs
 - [findUniswapV2Txs.js] - find uniswap v2 liquidations trxs
+- [findUniswapV3Txs.js] - find uniswap v3 liquidations trxs
+- [findAaveV2Txs.js] - find aave v2 liquidations trxs
 
 # 🛠 token utils
 - [fetchTokens.js] - read tokens and save as json file (coingecko, 1inch, 0x, kyber)
