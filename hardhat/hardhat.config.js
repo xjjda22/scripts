@@ -1,6 +1,10 @@
 // hardhat.config.js
+const path = require('path');
+require('dotenv').config({path:path.resolve('../', '.env')});
 const fs = require("fs");
 require("@nomiclabs/hardhat-waffle");
+
+const { INFURA_APIKEY } = process.env;
 
 const defaultNetwork = "mainnet";
 const mainnetGwei = 21;
@@ -24,7 +28,7 @@ module.exports = {
 	      url: "http://localhost:8545",
 	    },
 	    mainnet: {
-	      url: "https://mainnet.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", // <---- YOUR INFURA ID! (or it won't work)
+	      url: "https://mainnet.infura.io/v3/"+INFURA_APIKEY, // <---- YOUR INFURA ID! (or it won't work)
 	      //      url: "https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXXXXXXXX/eth/mainnet", // <---- YOUR MORALIS ID! (not limited to infura)
 	      gasPrice: mainnetGwei * 1000000000,
 	      // accounts: {
